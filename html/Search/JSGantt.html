@@ -41,7 +41,8 @@
 %   my ( $min_start, $min_start_obj );
 %   while ( my $Ticket = $Tickets->Next ) {
 %   my $subject = $Ticket->Subject;
-%   $subject =~ s/'/\\'/;
+%   $subject =~ s/'/\\'/g;
+%   $subject =~ s/\\/\\\\/g;
 %   my ( $start, $end ) = ('', '');
 %   my ( $start_obj, $end_obj );
 %   if ( $Ticket->StartsObj->Unix ) {
@@ -146,7 +147,7 @@
 
 %   for my $item ( @info ) {
         g.AddTaskItem(new JSGantt.TaskItem( <% join ',', map { 
-           s/'/\\'/g; $_ =~ /^\d+$/ ? $_ : q{'} . $_ . q{'} } @$item |n%> ));
+           $_ =~ /^\d+$/ ? $_ : q{'} . $_ . q{'} } @$item |n%> ));
 %   }
 
     g.Draw();    
