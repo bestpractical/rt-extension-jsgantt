@@ -171,6 +171,10 @@
 <%init>
 my $title = loc('JSGantt Results');
 my $Tickets = RT::Tickets->new( $session{'CurrentUser'} );
+if ( $Ticket && ! $Query) {
+    $Query = "MemberOf = $Ticket OR HasMember = $Ticket OR DependsOn = $Ticket OR DependedOnBy = $Ticket OR RefersTo = $Ticket OR ReferredToBy = $Ticket OR id=$Ticket";
+}
+
 $Tickets->FromSQL( $Query );
 if ( $OrderBy =~ /\|/ ) {
     # Multiple Sorts
@@ -190,4 +194,5 @@ else {
 $Query => undef
 $OrderBy => 'id'
 $Order => 'ASC'
+$Ticket => undef
 </%args>
