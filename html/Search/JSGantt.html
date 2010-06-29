@@ -135,6 +135,14 @@
 
 
 %# here let's tweak our results
+%# set to now if all tickets don't have start/end dates
+%   if ( ! $min_start ) {
+%       $min_start_obj = RT::Date->new($session{CurrentUser});
+%       $min_start_obj->SetToNow;
+%       my ($day,$month,$year) = ($min_start_obj->Localtime('user'))[3,4,5];
+%       $min_start = join '/', $month+1, $day, $year;
+%   }
+
 %   my $no_dates_color = RT->Config->Get('JSGanttNullDatesColor') || '333';
 %   for my $item ( @info ) {
 %       $item->[4] = $no_dates_color unless $item->[2];
