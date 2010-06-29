@@ -45,4 +45,5 @@
 %# those contributions and any derivatives thereof.
 %# 
 %# END BPS TAGGED BLOCK }}}
-<li><a href="<%RT->Config->Get('WebPath')%>/Search/JSGantt.html<%$ARGS{QueryString}%>"><&|/l&>JSGantt</&></a></li>
+<li><a
+href="<%RT->Config->Get('WebPath')%>/Search/JSGantt.html<%$ARGS{QueryString}%>"><&|/l&>Gantt Chart</&></a></li>
