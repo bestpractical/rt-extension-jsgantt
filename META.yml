@@ -18,6 +18,8 @@ no_index:
   directory:
     - html
     - inc
+requires:
+  JSON: 0
 resources:
   license: http://dev.perl.org/licenses/
 version: 0.03
