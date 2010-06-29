@@ -128,7 +128,7 @@
 %       }
 %   }
 
-%   push @info, [ $Ticket->id, ( $Ticket->id . ': ' . substr $subject, 0, 40 ),
+%   push @info, [ $Ticket->id, ( $Ticket->id . ': ' . substr $subject, 0, 30 ),
 %       $start, $end, $colors[$i++%@colors],
 %       ( RT->Config->Get('WebPath') . '/Ticket/Display.html?id=' .  $Ticket->id ),
 %       0, ( $Ticket->OwnerObj->Name || $Ticket->OwnerObj->EmailAddress ),
