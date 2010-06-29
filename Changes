@@ -1,0 +1,24 @@
+Revision history for RT-Extension-JSGantt
+
+0.03 Wed Jun 30 02:49:02 CST 2010
+
+    tweak the way we figure out Start/End Dates:
+        Start: Starts or Started field
+        End: Due Field
+
+        if one eixsts but the ohter not, first try to caculate by the time
+        estimated( or TimeLeft + TimeWorked ) and the config
+        $JSGanttWorkingHoursPerDay, if fails, use config $JSGanttDefaultDays.
+
+        if both are not defined, find the minimal start date of the whole
+        results, and use it for both start and end dates, and use config
+        $JSGanttNullDatesColor to draw
+
+0.02 Fri Jun 25 09:29:30 CST 2010
+
+use TimeWorked + TimeLeft for progress, use TimeEstimated instead
+    if TimeLeft is not defined.
+
+0.01 Wed Jun 23 13:00:12 CST 2010
+       Initial release.
+

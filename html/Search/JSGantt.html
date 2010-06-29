@@ -1,0 +1,186 @@
+<& /Elements/Header, Title => $title,
+    Refresh => $session{'tickets_refresh_interval'} || RT->Config->Get('SearchResultsRefreshInterval', $session{'CurrentUser'} ),
+    &>
+<& /Ticket/Elements/Tabs, Title => $title, Query => $ARGS{Query}, &>
+<div style="position:relative" class="gantt" id="GanttChartDIV"></div>
+<script>
+
+
+  // here's all the html code neccessary to display the chart object
+
+  // Future idea would be to allow XML file name to be passed in and chart tasks built from file.
+
+  var g = new JSGantt.GanttChart('g',document.getElementById('GanttChartDIV'),
+  '<% RT->Config->Get('JSGanttDefaultFormat') || 'day' %>' );
+
+    g.setShowRes(<% RT->Config->Get('JSGanttShowOwner')? 1 : 0 %>);
+    g.setShowDur(<% RT->Config->Get('JSGanttShowDuration')? 1 : 0 %> );
+
+% my $progress = 0;
+% my $show_progress = RT->Config->Get('JSGanttShowProgress' );
+% if ( $show_progress ) {
+        g.setShowComp(1);
+% } else {
+    g.setShowComp(0);
+% }
+
+    g.setCaptionType('Resource');  // Set to Show Caption (None,Caption,Resource,Duration,Complete)
+
+
+  //var gr = new Graphics();
+
+  if( g ) {
+
+    // Parameters             (pID, pName,                  pStart,      pEnd,        pColor,   pLink,          pMile, pRes,  pComp, pGroup, pParent, pOpen, pDepend, pCaption)
+    
+    // You can also use the XML file parser JSGantt.parseXML('project.xml',g)
+%   my @colors = grep { defined } RT->Config->Get('JSGanttColorScheme');
+%   @colors = ( 'ff0000', 'ffff00', 'ff00ff', '00ff00', '00ffff', '0000ff' )  unless @colors;
+%   my $i;
+%   my @info;
+%   my ( $min_start, $min_start_obj );
+%   while ( my $Ticket = $Tickets->Next ) {
+%   my $subject = $Ticket->Subject;
+%   $subject =~ s/'/\\'/;
+%   my ( $start, $end ) = ('', '');
+%   my ( $start_obj, $end_obj );
+%   if ( $Ticket->StartsObj->Unix ) {
+%       my ($day,$month,$year) = ($Ticket->StartsObj->Localtime('user'))[3,4,5];
+%       $start = join '/', $month+1, $day, $year;
+%       $start_obj = $Ticket->StartsObj;
+%   }
+%   elsif ( $Ticket->StartedObj->Unix ) {
+%       my ($day,$month,$year) = ($Ticket->StartedObj->Localtime('user'))[3,4,5];
+%       $start = join '/', $month+1, $day, $year;
+%       $start_obj = $Ticket->StartedObj;
+%   }
+
+%   if ( $Ticket->DueObj->Unix ) {
+%       my ($day,$month,$year) = ($Ticket->DueObj->Localtime('user'))[3,4,5];
+%       $end = join '/', $month+1, $day, $year;
+%       $end_obj = $Ticket->DueObj;
+%   }
+%   # if $start or $end is empty still
+%   unless ( $start && $end ) {
+%       my $hours_per_day = RT->Config->Get('JSGanttWorkingHoursPerDay') || 8;
+%       my $total_time = defined $Ticket->TimeLeft ? ( $Ticket->TimeWorked +
+%           $Ticket->TimeLeft ) : $Ticket->TimeEstimated;
+%       $total_time ||= 0;
+%       my $days = int($total_time / ( 60 * $hours_per_day ));
+%       $days ||= RT->Config->Get('JSGanttDefaultDays') || 7;
+%       # since we only use date without time, let's make days inclusive
+%       # ( i.e. 5/12/2010 minus 3 days is 5/10/2010. 10,11,12, 3 days! )
+%       $days = $days =~ /\./ ? int $days: $days-1;
+%       $days = 0 if $days < 0;
+%       
+%       if ( $start && !$end ) {
+%           $end_obj = RT::Date->new( $session{CurrentUser} ); 
+%           $end_obj->Set( Value => $start_obj->Unix );
+%           $end_obj->AddDays( $days );
+%           my ($day,$month,$year) = ($end_obj->Localtime('user'))[3,4,5];
+%           $end = join '/', $month+1, $day, $year;
+%       }
+%
+%       if ( $end && !$start ) {
+%           $start_obj = RT::Date->new( $session{CurrentUser} ); 
+%           $start_obj->Set( Value => $end_obj->Unix );
+%           $start_obj->AddDays( -1 * $days );
+%           my ($day,$month,$year) = ($start_obj->Localtime('user'))[3,4,5];
+%           $start = join '/', $month+1, $day, $year;
+%       }
+%   }
+
+%   if ( ! $start ) {
+%       $RT::Logger->warning( "Ticket " . $Ticket->id . " doesn't have Starts/Started defined, and we can't figure it out either");
+%       $start = $end;
+%   }
+%   if ( ! $end ) {
+%       $RT::Logger->warning( "Ticket " . $Ticket->id . " doesn't have Due defined, and we can't figure it out either");
+%       $end = $start;
+%   }
+
+%   my $has_members = $Ticket->Members->Count ? 1 : 0;
+
+%   # parent ticket's start date is not used
+%   if ( !$has_members && $start_obj && ( !$min_start_obj || $min_start_obj->Unix > $start_obj->Unix ) ) {
+%       $min_start_obj = $start_obj;
+%       $min_start = $start;
+%   }
+
+%   my $parent = 0;
+%   if ( $Ticket->MemberOf->Count ) {
+%       $parent = $Ticket->MemberOf->First->TargetObj->id;
+%   }
+
+%   my $depends = $Ticket->DependsOn;
+%   my @depends;
+%   if ( $depends->Count ) {
+%       while ( my $d = $depends->Next ) {
+%           push @depends, $d->TargetObj->id;
+%       }
+%   }
+%   if ( $show_progress ) {
+%       my $total_time = defined $Ticket->TimeLeft ? ( $Ticket->TimeWorked +
+%           $Ticket->TimeLeft ) : $Ticket->TimeEstimated;
+%       if ( $Ticket->TimeWorked ) {
+%           $progress = int( 100 * $Ticket->TimeWorked / $total_time );
+%       }
+%   }
+
+%   push @info, [ $Ticket->id, ( $Ticket->id . ': ' . substr $subject, 0, 40 ),
+%       $start, $end, $colors[$i++%@colors],
+%       ( RT->Config->Get('WebPath') . '/Ticket/Display.html?id=' .  $Ticket->id ),
+%       0, ( $Ticket->OwnerObj->Name || $Ticket->OwnerObj->EmailAddress ),
+%       $progress, $has_members, $parent, 1, ( @depends ? join ',', @depends : 0 )];
+
+%   }
+
+
+%# here let's tweak our results
+%   my $no_dates_color = RT->Config->Get('JSGanttNullDatesColor') || '333';
+%   for my $item ( @info ) {
+%       $item->[4] = $no_dates_color unless $item->[2];
+%       $item->[2] ||= $min_start;
+%       $item->[3] ||= $min_start;
+%   }
+
+%   for my $item ( @info ) {
+        g.AddTaskItem(new JSGantt.TaskItem( <% join ',', map { 
+           s/'/\\'/g; $_ =~ /^\d+$/ ? $_ : q{'} . $_ . q{'} } @$item |n%> ));
+%   }
+
+    g.Draw();    
+    g.DrawDependencies();
+
+  }
+  else {
+
+    alert("not defined");
+
+  }
+
+</script>
+
+<%init>
+my $title = loc('JSGantt Results');
+my $Tickets = RT::Tickets->new( $session{'CurrentUser'} );
+$Tickets->FromSQL( $Query );
+if ( $OrderBy =~ /\|/ ) {
+    # Multiple Sorts
+    my @OrderBy = split /\|/, $OrderBy;
+    my @Order   = split /\|/, $Order;
+    $Tickets->OrderByCols(
+        map { { FIELD => $OrderBy[$_], ORDER => $Order[$_] } }
+        ( 0 .. $#OrderBy )
+    );
+}
+else {
+    $Tickets->OrderBy( FIELD => $OrderBy, ORDER => $Order );
+}
+</%init>
+
+<%args>
+$Query => undef
+$OrderBy => 'id'
+$Order => 'ASC'
+</%args>

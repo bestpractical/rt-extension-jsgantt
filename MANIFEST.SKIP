@@ -1,0 +1,5 @@
+^Makefile$
+^pm_to_blib
+^MANIFEST.SKIP
+^MANIFEST.bak
+^blib

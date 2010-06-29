@@ -1,0 +1,27 @@
+RT-Extension-JSGantt version 0.01
+
+How to install:
+
+1. perl Makefile.PL
+2. make
+3. make install ( you may need root permission )
+4. config items in etc/RT_SiteConfig.pm
+    # add RT::Extension::JSGantt to @Plugins: e.g.
+        Set(@Plugins,'RT::Extension::JSGantt');
+    # customize JSGantt as you wish:
+        Set($JSGanttDefaultFormat,'month'); # or day or year or quarter
+        Set($JSGanttShowDuration,1);
+        Set($JSGanttShowOwner,1);
+        Set($JSGanttShowProgress,1);
+        Set(@JSGanttColorScheme, 'ff0000', 'ffff00', 'ff00ff', '00ff00', '00ffff', '0000ff');
+
+        # working hours per day, used to caculate day length
+        Set($JSGanttWorkingHoursPerDay, 8); 
+
+        # default day length, used to figure out start/end if one exists but the other not
+        Set($JSGanttDefaultDays, 7);
+
+        # if we can't find both start and end dates, use this color
+        Set($JSGanttNullDatesColor, '333');
+
+5. restart RT
