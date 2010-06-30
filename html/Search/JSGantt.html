@@ -38,7 +38,7 @@
 %   my $i;
 %   my @info;
 %   my ( $min_start, $min_start_obj );
-%   while ( my $Ticket = $Tickets->Next ) {
+%   for my $Ticket ( @Tickets ) {
 %   my $subject = $Ticket->Subject;
 %   my ( $start, $end ) = ('', '');
 %   my ( $start_obj, $end_obj );
@@ -170,24 +170,89 @@
 
 <%init>
 my $title = loc('JSGantt Results');
-my $Tickets = RT::Tickets->new( $session{'CurrentUser'} );
-if ( $Ticket && ! $Query) {
-    $Query = "MemberOf = $Ticket OR HasMember = $Ticket OR DependsOn = $Ticket OR DependedOnBy = $Ticket OR RefersTo = $Ticket OR ReferredToBy = $Ticket OR id=$Ticket";
+
+my ( $Tickets, @Tickets );
+
+sub related_tickets {
+    my $ticket = shift;
+    my @types = @_;
+    return unless $ticket;
+    my @tickets;
+    for my $type ( @types ) {
+        my $links = $ticket->$type->ItemsArrayRef;
+        my $target_or_base =
+          $type =~ /DependsOn|MemberOf|RefersTo/ ? 'TargetObj' : 'BaseObj';
+        for my $link (@$links) {
+            my $obj = $link->$target_or_base;
+            if ( $obj && $obj->isa('RT::Ticket') ) {
+                push @tickets, $obj;
+            }
+        }
+    }
+    return @tickets;
 }
 
-$Tickets->FromSQL( $Query );
-if ( $OrderBy =~ /\|/ ) {
-    # Multiple Sorts
-    my @OrderBy = split /\|/, $OrderBy;
-    my @Order   = split /\|/, $Order;
-    $Tickets->OrderByCols(
-        map { { FIELD => $OrderBy[$_], ORDER => $Order[$_] } }
-        ( 0 .. $#OrderBy )
-    );
+if ( $Ticket ) {
+    my %checked;
+    my @to_be_checked;
+
+    my $ticket = RT::Ticket->new( $session{CurrentUser} );
+    $ticket->Load( $Ticket );
+    if ( $ticket->id ) {
+        # find the highest ancestors to make chart pretty
+        my @parents = related_tickets( $ticket, 'MemberOf' );
+        @parents = $ticket unless @parents;
+        while ( @parents ) {
+            my @ancestors;
+            for my $parent ( @parents ) {
+                unshift @ancestors, related_tickets( $parent, 'MemberOf' );
+            }
+            
+            if ( @ancestors ) {
+                @parents = @ancestors;
+            }
+            else {
+                @to_be_checked = @parents;
+                undef @parents;
+            }
+        }
+
+        while ( my $ticket = shift @to_be_checked ) {
+            push @Tickets, $ticket unless grep { $ticket->id eq $_->id } @Tickets;
+            push @to_be_checked, grep { ! $checked{$_->id}++ } related_tickets( $ticket, 'Members' );
+        }
+
+        @to_be_checked = @Tickets;
+        while ( my $ticket = shift @to_be_checked ) {
+            push @Tickets, $ticket unless grep { $ticket->id eq $_->id } @Tickets;
+            unshift @to_be_checked, grep { ! $checked{$_->id}++ } related_tickets( $ticket, 'Members' );
+            unshift @to_be_checked, grep { ! $checked{$_->id}++ } related_tickets( $ticket, 'MemberOf' );
+            push @to_be_checked, grep { ! $checked{$_->id}++ } related_tickets(
+                $ticket, 'DependsOn', 'DependedOnBy', 'RefersTo', 'ReferredToBy' );
+        }
+    }
+}
+elsif ( $Query ) {
+    $Tickets = RT::Tickets->new( $session{'CurrentUser'} );
+    $Tickets->FromSQL( $Query );
+    if ( $OrderBy =~ /\|/ ) {
+        # Multiple Sorts
+        my @OrderBy = split /\|/, $OrderBy;
+        my @Order   = split /\|/, $Order;
+        $Tickets->OrderByCols(
+            map { { FIELD => $OrderBy[$_], ORDER => $Order[$_] } }
+            ( 0 .. $#OrderBy )
+        );
+    }
+    else {
+        $Tickets->OrderBy( FIELD => $OrderBy, ORDER => $Order );
+    }
+    @Tickets = @{ $Tickets->ItemsArrayRef };
 }
 else {
-    $Tickets->OrderBy( FIELD => $OrderBy, ORDER => $Order );
+    $m->abort;
 }
+
 </%init>
 
 <%args>
