@@ -1,0 +1,87 @@
+diff --git b/html/NoAuth/css/jsgantt.css a/html/NoAuth/css/jsgantt.css
+index 683fcad..5845df1 100755
+--- b/html/NoAuth/css/jsgantt.css
++++ a/html/NoAuth/css/jsgantt.css
+@@ -49,5 +49,5 @@
+ 
+ DIV.scroll { BORDER-RIGHT: #efefef 1px solid; PADDING-RIGHT: 0px; BORDER-TOP: #efefef 1px solid; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; OVERFLOW: hidden; BORDER-LEFT: #efefef 1px solid; WIDTH: 420px; PADDING-TOP: 0px; BORDER-BOTTOM: #efefef 1px solid; BACKGROUND-COLOR: #ffffff }
+ 
+-DIV.scroll2 { position:relative; PADDING-RIGHT: 0px; overflow:auto ;overflow-x:scroll;overflow-y:hidden; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; WIDTH: 482px; PADDING-TOP: 0px; BACKGROUND-COLOR: #ffffff }
++DIV.scroll2 { position:relative; PADDING-RIGHT: 0px; overflow:auto ;overflow-x:scroll;overflow-y:hidden; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; WIDTH: 720px; PADDING-TOP: 0px; BACKGROUND-COLOR: #ffffff }
+ 
+diff --git b/html/NoAuth/js/jsgantt.js a/html/NoAuth/js/jsgantt.js
+index 81012fb..9b1654a 100755
+--- b/html/NoAuth/js/jsgantt.js
++++ a/html/NoAuth/js/jsgantt.js
+@@ -1046,7 +1046,7 @@ Complete-Displays task percent complete</p>
+                }
+ 
+                vLeftTable += 
+-                  '<span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '",300,200); style="cursor:pointer"> ' + vTaskList[i].getName() + '</span></NOBR></TD>' ;
++                  '<span><a target="_blank" href="' + vTaskList[i].getLink() + '">' + vTaskList[i].getName() + '</a></NOBR></TD>' ;
+ 
+                if(vShowRes ==1) vLeftTable += '  <TD class=gname style="WIDTH: 60px; HEIGHT: 20px; TEXT-ALIGN: center; BORDER-TOP: #efefef 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #efefef 1px solid;" align=center><NOBR>' + vTaskList[i].getResource() + '</NOBR></TD>' ;
+                if(vShowDur ==1) vLeftTable += '  <TD class=gname style="WIDTH: 60px; HEIGHT: 20px; TEXT-ALIGN: center; BORDER-TOP: #efefef 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #efefef 1px solid;" align=center><NOBR>' + vTaskList[i].getDuration(vFormat) + '</NOBR></TD>' ;
+@@ -1113,7 +1113,7 @@ Complete-Displays task percent complete</p>
+          while(Date.parse(vTmpDate) <= Date.parse(vMaxDate))
+          {	
+             vStr = vTmpDate.getFullYear() + '';
+-            vStr = vStr.substring(2,4);
++            // vStr = vStr.substring(2,4);
+             
+             
+             if(vFormat == 'minute')
+@@ -1140,12 +1140,12 @@ Complete-Displays task percent complete</p>
+             }
+             else if(vFormat == 'week')
+             {
+-  		         vRightTable += '<td class=gdatehead align=center style="FONT-SIZE: 12px; HEIGHT: 19px;" width='+vColWidth+'px>`'+ vStr + '</td>';
++  		         vRightTable += '<td class=gdatehead align=center style="FONT-SIZE: 12px; HEIGHT: 19px;" width='+vColWidth+'px>'+ vStr + '</td>';
+                vTmpDate.setDate(vTmpDate.getDate()+7);
+             }
+             else if(vFormat == 'month')
+             {
+-	            vRightTable += '<td class=gdatehead align=center style="FONT-SIZE: 12px; HEIGHT: 19px;" width='+vColWidth+'px>`'+ vStr + '</td>';
++	            vRightTable += '<td class=gdatehead align=center style="FONT-SIZE: 12px; HEIGHT: 19px;" width='+vColWidth+'px>'+ vStr + '</td>';
+                vTmpDate.setDate(vTmpDate.getDate() + 1);
+                while(vTmpDate.getDate() > 1)
+                {
+@@ -1154,7 +1154,7 @@ Complete-Displays task percent complete</p>
+             }
+             else if(vFormat == 'quarter')
+             {
+-	            vRightTable += '<td class=gdatehead align=center style="FONT-SIZE: 12px; HEIGHT: 19px;" width='+vColWidth+'px>`'+ vStr + '</td>';
++	            vRightTable += '<td class=gdatehead align=center style="FONT-SIZE: 12px; HEIGHT: 19px;" width='+vColWidth+'px>'+ vStr + '</td>';
+                vTmpDate.setDate(vTmpDate.getDate() + 81);
+                while(vTmpDate.getDate() > 1)
+                {
+@@ -1905,9 +1905,9 @@ JSGantt.folder= function (pID,ganttObj) {
+             JSGantt.show(pID, 1, ganttObj);
+ 
+                if (JSGantt.isIE()) 
+-                  {JSGantt.findObj('group_'+pID).innerText = '–';}
++                  {JSGantt.findObj('group_'+pID).innerText = 'â€“';}
+                else
+-                  {JSGantt.findObj('group_'+pID).textContent = '–';}
++                  {JSGantt.findObj('group_'+pID).textContent = 'â€“';}
+ 
+          }
+ 
+@@ -1979,7 +1979,7 @@ JSGantt.show =  function (pID, pTop, ganttObj) {
+          } else {
+ 
+             if (JSGantt.isIE()) { // IE;
+-               if( JSGantt.findObj('group_'+pID).innerText == '–') {
++               if( JSGantt.findObj('group_'+pID).innerText == 'â€“') {
+                   JSGantt.findObj('child_'+vID).style.display = "";
+                   JSGantt.findObj('childgrid_'+vID).style.display = "";
+                   vList[i].setVisible(1);
+@@ -1987,7 +1987,7 @@ JSGantt.show =  function (pID, pTop, ganttObj) {
+ 
+             } else {
+ 
+-               if( JSGantt.findObj('group_'+pID).textContent == '–') {
++               if( JSGantt.findObj('group_'+pID).textContent == 'â€“') {
+                   JSGantt.findObj('child_'+vID).style.display = "";
+                   JSGantt.findObj('childgrid_'+vID).style.display = "";
+                   vList[i].setVisible(1);

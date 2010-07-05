@@ -26,3 +26,13 @@ How to install:
 5. patch /Ticket/Elements/ShowSummary
     $ patch /path/to/Ticket/Elements/ShowSummary < /path/to/showsummary.diff
 6. restart RT
+
+
+How to update jsgantt.js and jsgantt.css:
+
+To make it work better with RT, we changed original jsgantt.js and jsgantt.css,
+which can be found in jsgantt.diff.
+
+If you want to update jsgantt.js and jsgantt.css to a new version, please 
+review the diff to see what have been changed and maybe do the same change too.
+
