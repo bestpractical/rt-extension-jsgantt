@@ -1046,7 +1046,7 @@ Complete-Displays task percent complete</p>
                }
 
                vLeftTable += 
-                  '<span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '",300,200); style="cursor:pointer"> ' + vTaskList[i].getName() + '</span></NOBR></TD>' ;
+                  '<span><a target="_blank" href="' + vTaskList[i].getLink() + '">' + vTaskList[i].getName() + '</a></NOBR></TD>' ;
 
                if(vShowRes ==1) vLeftTable += '  <TD class=gname style="WIDTH: 60px; HEIGHT: 20px; TEXT-ALIGN: center; BORDER-TOP: #efefef 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #efefef 1px solid;" align=center><NOBR>' + vTaskList[i].getResource() + '</NOBR></TD>' ;
                if(vShowDur ==1) vLeftTable += '  <TD class=gname style="WIDTH: 60px; HEIGHT: 20px; TEXT-ALIGN: center; BORDER-TOP: #efefef 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #efefef 1px solid;" align=center><NOBR>' + vTaskList[i].getDuration(vFormat) + '</NOBR></TD>' ;
@@ -1113,7 +1113,7 @@ Complete-Displays task percent complete</p>
          while(Date.parse(vTmpDate) <= Date.parse(vMaxDate))
          {	
             vStr = vTmpDate.getFullYear() + '';
-            vStr = vStr.substring(2,4);
+            // vStr = vStr.substring(2,4);
             
             
             if(vFormat == 'minute')
@@ -1140,12 +1140,12 @@ Complete-Displays task percent complete</p>
             }
             else if(vFormat == 'week')
             {
-  		         vRightTable += '<td class=gdatehead align=center style="FONT-SIZE: 12px; HEIGHT: 19px;" width='+vColWidth+'px>`'+ vStr + '</td>';
+  		         vRightTable += '<td class=gdatehead align=center style="FONT-SIZE: 12px; HEIGHT: 19px;" width='+vColWidth+'px>'+ vStr + '</td>';
                vTmpDate.setDate(vTmpDate.getDate()+7);
             }
             else if(vFormat == 'month')
             {
-	            vRightTable += '<td class=gdatehead align=center style="FONT-SIZE: 12px; HEIGHT: 19px;" width='+vColWidth+'px>`'+ vStr + '</td>';
+	            vRightTable += '<td class=gdatehead align=center style="FONT-SIZE: 12px; HEIGHT: 19px;" width='+vColWidth+'px>'+ vStr + '</td>';
                vTmpDate.setDate(vTmpDate.getDate() + 1);
                while(vTmpDate.getDate() > 1)
                {
@@ -1154,7 +1154,7 @@ Complete-Displays task percent complete</p>
             }
             else if(vFormat == 'quarter')
             {
-	            vRightTable += '<td class=gdatehead align=center style="FONT-SIZE: 12px; HEIGHT: 19px;" width='+vColWidth+'px>`'+ vStr + '</td>';
+	            vRightTable += '<td class=gdatehead align=center style="FONT-SIZE: 12px; HEIGHT: 19px;" width='+vColWidth+'px>'+ vStr + '</td>';
                vTmpDate.setDate(vTmpDate.getDate() + 81);
                while(vTmpDate.getDate() > 1)
                {
