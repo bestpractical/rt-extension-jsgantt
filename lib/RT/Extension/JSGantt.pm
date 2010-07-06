@@ -231,6 +231,14 @@ sub _RelatedTickets {
 
 sub _GetDate {
     my $ticket = shift;
+    my $depth;
+    if ( $_[0] =~ /^\d+$/ ) {
+        $depth = shift;
+    } 
+    else {
+        $depth = 0;
+    }
+
     my @fields = @_;
     my ( $date_obj, $date );
     for my $field (@fields) {
@@ -243,14 +251,14 @@ sub _GetDate {
         }
     }
 
-    if ($date) {
+    if ($date || $depth++ > 10 ) {
         return ( $date_obj, $date );
     }
 
     # inherit from parents
     for my $member_of ( @{ $ticket->MemberOf->ItemsArrayRef } ) {
         my $parent = $member_of->TargetObj;
-        return _GetDate( $parent, @fields );
+        return _GetDate( $parent, $depth, @fields );
     }
 }
 
