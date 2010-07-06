@@ -166,16 +166,14 @@ sub TicketsInfo {
             $end = $start;
         }
 
-        my $has_members = $Ticket->Members->Count ? 1 : 0;
-
-        # parent ticket's start date is not used when drawing
-        if ( !has_members
-            && $start_obj
+        if ( $start_obj
             && ( !$min_start_obj || $min_start_obj->Unix > $start_obj->Unix ) )
         {
             $min_start_obj = $start_obj;
             $min_start     = $start;
         }
+
+        my $has_members = $Ticket->Members->Count ? 1 : 0;
 
         my $depends = $Ticket->DependsOn;
         my @depends;
