@@ -87,67 +87,42 @@ sub TicketsInfo {
         }
 
         # find start/end, this is, uhh, long long way to go
-        my ( $start, $end ) = ( '', '' );
-        my ( $start_obj, $end_obj );
-        if ( $Ticket->StartsObj->Unix ) {
-            my ( $day, $month, $year ) =
-              ( $Ticket->StartsObj->Localtime('user') )[ 3, 4, 5 ];
-            $start = join '/', $month + 1, $day, $year;
-            $start_obj = $Ticket->StartsObj;
-        }
-        elsif ( $Ticket->StartedObj->Unix ) {
-            my ( $day, $month, $year ) =
-              ( $Ticket->StartedObj->Localtime('user') )[ 3, 4, 5 ];
-            $start = join '/', $month + 1, $day, $year;
-            $start_obj = $Ticket->StartedObj;
-        }
-
-        if ( $Ticket->DueObj->Unix ) {
-            my ( $day, $month, $year ) =
-              ( $Ticket->DueObj->Localtime('user') )[ 3, 4, 5 ];
-            $end = join '/', $month + 1, $day, $year;
-            $end_obj = $Ticket->DueObj;
-        }
+        my ( $start_obj, $start ) = _GetDate( $Ticket, 'Starts', 'Started' );
+        my ( $end_obj, $end ) = _GetDate( $Ticket, 'Due' );
 
         # if $start or $end is empty still
         unless ( $start && $end ) {
-            if ($parent) {
-                $start ||= $info{$parent}{start};
-                $end   ||= $info{$parent}{end};
+            my $hours_per_day = RT->Config->Get('JSGanttWorkingHoursPerDay')
+              || 8;
+            my $total_time =
+              defined $Ticket->TimeLeft
+              ? ( $Ticket->TimeWorked + $Ticket->TimeLeft )
+              : $Ticket->TimeEstimated;
+            $total_time ||= 0;
+            my $days = int( $total_time / ( 60 * $hours_per_day ) );
+            $days ||= RT->Config->Get('JSGanttDefaultDays') || 7;
+
+            # since we only use date without time, let's make days inclusive
+            # ( i.e. 5/12/2010 minus 3 days is 5/10/2010. 10,11,12, 3 days! )
+            $days = $days =~ /\./ ? int $days : $days - 1;
+            $days = 0 if $days < 0;
+
+            if ( $start && !$end ) {
+                $end_obj = RT::Date->new( $args{CurrentUser} );
+                $end_obj->Set( Value => $start_obj->Unix );
+                $end_obj->AddDays($days);
+                my ( $day, $month, $year ) =
+                  ( $end_obj->Localtime('user') )[ 3, 4, 5 ];
+                $end = join '/', $month + 1, $day, $year;
             }
-            else {
-                my $hours_per_day = RT->Config->Get('JSGanttWorkingHoursPerDay')
-                  || 8;
-                my $total_time =
-                  defined $Ticket->TimeLeft
-                  ? ( $Ticket->TimeWorked + $Ticket->TimeLeft )
-                  : $Ticket->TimeEstimated;
-                $total_time ||= 0;
-                my $days = int( $total_time / ( 60 * $hours_per_day ) );
-                $days ||= RT->Config->Get('JSGanttDefaultDays') || 7;
 
-               # since we only use date without time, let's make days inclusive
-               # ( i.e. 5/12/2010 minus 3 days is 5/10/2010. 10,11,12, 3 days! )
-                $days = $days =~ /\./ ? int $days : $days - 1;
-                $days = 0 if $days < 0;
-
-                if ( $start && !$end ) {
-                    $end_obj = RT::Date->new( $args{CurrentUser} );
-                    $end_obj->Set( Value => $start_obj->Unix );
-                    $end_obj->AddDays($days);
-                    my ( $day, $month, $year ) =
-                      ( $end_obj->Localtime('user') )[ 3, 4, 5 ];
-                    $end = join '/', $month + 1, $day, $year;
-                }
-
-                if ( $end && !$start ) {
-                    $start_obj = RT::Date->new( $args{CurrentUser} );
-                    $start_obj->Set( Value => $end_obj->Unix );
-                    $start_obj->AddDays( -1 * $days );
-                    my ( $day, $month, $year ) =
-                      ( $start_obj->Localtime('user') )[ 3, 4, 5 ];
-                    $start = join '/', $month + 1, $day, $year;
-                }
+            if ( $end && !$start ) {
+                $start_obj = RT::Date->new( $args{CurrentUser} );
+                $start_obj->Set( Value => $end_obj->Unix );
+                $start_obj->AddDays( -1 * $days );
+                my ( $day, $month, $year ) =
+                  ( $start_obj->Localtime('user') )[ 3, 4, 5 ];
+                $start = join '/', $month + 1, $day, $year;
             }
         }
 
@@ -251,6 +226,32 @@ sub _RelatedTickets {
         }
     }
     return @tickets;
+}
+
+
+sub _GetDate {
+    my $ticket = shift;
+    my @fields = @_;
+    my ( $date_obj, $date );
+    for my $field (@fields) {
+        my $obj = $field . 'Obj';
+        if ( $ticket->$obj->Unix ) {
+            $date_obj = $ticket->$obj;
+            my ( $day, $month, $year ) =
+              ( $date_obj->Localtime('user') )[ 3, 4, 5 ];
+            $date = join '/', $month + 1, $day, $year;
+        }
+    }
+
+    if ($date) {
+        return ( $date_obj, $date );
+    }
+
+    # inherit from parents
+    for my $member_of ( @{ $ticket->MemberOf->ItemsArrayRef } ) {
+        my $parent = $member_of->TargetObj;
+        return _GetDate( $parent, @fields );
+    }
 }
 
 
