@@ -163,8 +163,10 @@ sub TicketsInfo {
               defined $Ticket->TimeLeft
               ? ( $Ticket->TimeWorked + $Ticket->TimeLeft )
               : $Ticket->TimeEstimated;
-            if ( $Ticket->TimeWorked ) {
-                $progress = int( 100 * $Ticket->TimeWorked / $total_time );
+            if ($total_time) {
+                if ( $Ticket->TimeWorked ) {
+                    $progress = int( 100 * $Ticket->TimeWorked / $total_time );
+                }
             }
         }
 
