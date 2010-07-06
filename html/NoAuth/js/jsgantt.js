@@ -1046,7 +1046,7 @@ Complete-Displays task percent complete</p>
                }
 
                vLeftTable += 
-                  '<span><a target="_blank" href="' + vTaskList[i].getLink() + '">' + vTaskList[i].getName() + '</a></NOBR></TD>' ;
+                  '<span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '",300,200); style="cursor:pointer"> ' + vTaskList[i].getName() + '</span></NOBR></TD>' ;
 
                if(vShowRes ==1) vLeftTable += '  <TD class=gname style="WIDTH: 60px; HEIGHT: 20px; TEXT-ALIGN: center; BORDER-TOP: #efefef 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #efefef 1px solid;" align=center><NOBR>' + vTaskList[i].getResource() + '</NOBR></TD>' ;
                if(vShowDur ==1) vLeftTable += '  <TD class=gname style="WIDTH: 60px; HEIGHT: 20px; TEXT-ALIGN: center; BORDER-TOP: #efefef 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #efefef 1px solid;" align=center><NOBR>' + vTaskList[i].getDuration(vFormat) + '</NOBR></TD>' ;
@@ -2014,10 +2014,11 @@ JSGantt.taskLink = function(pRef,pWidth,pHeight)
 
   {
 
-    if(pWidth)  {vWidth =pWidth;}  else {vWidth =400;}
-    if(pHeight) {vHeight=pHeight;} else {vHeight=400;}
+//    if(pWidth)  {vWidth =pWidth;}  else {vWidth =400;}
+//    if(pHeight) {vHeight=pHeight;} else {vHeight=400;}
 
-    var OpenWindow=window.open(pRef, "newwin", "height="+vHeight+",width="+vWidth); 
+//    var OpenWindow=window.open(pRef, "newwin", "height="+vHeight+",width="+vWidth); 
+    var OpenWindow=window.open(pRef, "newwin"); 
 
   };
 
