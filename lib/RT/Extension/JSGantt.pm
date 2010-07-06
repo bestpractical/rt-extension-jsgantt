@@ -19,13 +19,14 @@ sub AllRelatedTickets {
         # find the highest ancestors to make chart pretty
         my @parents = _RelatedTickets( $ticket, 'MemberOf' );
         @parents = $ticket unless @parents;
-        while (@parents) {
+        my $depth = 0;
+        while (@parents ) {
             my @ancestors;
             for my $parent (@parents) {
                 unshift @ancestors, _RelatedTickets( $parent, 'MemberOf' );
             }
 
-            if (@ancestors) {
+            if (@ancestors && $depth++ < 10 ) {
                 @parents = @ancestors;
             }
             else {
@@ -111,8 +112,6 @@ sub TicketsInfo {
         # if $start or $end is empty still
         unless ( $start && $end ) {
             if ($parent) {
-
-                # yep, it's sure that $parent lives in %info already
                 $start ||= $info{$parent}{start};
                 $end   ||= $info{$parent}{end};
             }
@@ -170,7 +169,7 @@ sub TicketsInfo {
         my $has_members = $Ticket->Members->Count ? 1 : 0;
 
         # parent ticket's start date is not used when drawing
-        if (  !$has_members
+        if ( !has_members
             && $start_obj
             && ( !$min_start_obj || $min_start_obj->Unix > $start_obj->Unix ) )
         {
