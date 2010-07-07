@@ -69,7 +69,6 @@ sub TicketsInfo {
 
 
     my ( @ids, %info );
-    my $progress = 0;
     my @colors = grep { defined } RT->Config->Get('JSGanttColorScheme');
     @colors = ( 'ff0000', 'ffff00', 'ff00ff', '00ff00', '00ffff', '0000ff' )
       unless @colors;
@@ -79,6 +78,7 @@ sub TicketsInfo {
     my ( $min_start, $min_start_obj );
 
     for my $Ticket (@{$args{Tickets}}) {
+        my $progress = 0;
         my $subject = $Ticket->Subject;
 
         my $parent = 0;
