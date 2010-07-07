@@ -95,7 +95,7 @@ sub TicketsInfo {
             my $hours_per_day = RT->Config->Get('JSGanttWorkingHoursPerDay')
               || 8;
             my $total_time =
-              defined $Ticket->TimeLeft
+              defined $Ticket->TimeLeft && $Ticket->TimeLeft =~ /\d/
               ? ( $Ticket->TimeWorked + $Ticket->TimeLeft )
               : $Ticket->TimeEstimated;
             $total_time ||= 0;
@@ -160,10 +160,10 @@ sub TicketsInfo {
 
         if ($show_progress) {
             my $total_time =
-              defined $Ticket->TimeLeft
+              defined $Ticket->TimeLeft && $Ticket->TimeLeft =~ /\d/
               ? ( $Ticket->TimeWorked + $Ticket->TimeLeft )
               : $Ticket->TimeEstimated;
-            if ($total_time) {
+            if ($total_time && $total_time =~ /\d/ ) {
                 if ( $Ticket->TimeWorked ) {
                     $progress = int( 100 * $Ticket->TimeWorked / $total_time );
                 }
