@@ -194,7 +194,7 @@ sub TicketsInfo {
 
     #let's tweak our results
     #set to now if all tickets don't have start/end dates
-    unless ( $min_start_obj && $min_start_obj->Unix ) {
+    unless ( $min_start_obj && $min_start_obj->Unix > 0 ) {
         $min_start_obj = RT::Date->new( $args{CurrentUser} );
         $min_start_obj->SetToNow;
         my ( $day, $month, $year ) =
@@ -245,7 +245,7 @@ sub _GetDate {
     my ( $date_obj, $date );
     for my $field (@fields) {
         my $obj = $field . 'Obj';
-        if ( $ticket->$obj->Unix ) {
+        if ( $ticket->$obj->Unix > 0 ) {
             $date_obj = $ticket->$obj;
             my ( $day, $month, $year ) =
               ( $date_obj->Localtime('user') )[ 3, 4, 5 ];
