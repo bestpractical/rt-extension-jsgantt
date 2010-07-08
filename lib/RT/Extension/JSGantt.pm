@@ -35,29 +35,7 @@ sub AllRelatedTickets {
             }
         }
 
-        while ( my $ticket = shift @to_be_checked ) {
-            push @tickets, $ticket
-              unless grep { $ticket->id eq $_->id } @tickets;
-            push @to_be_checked,
-              grep { !$checked{ $_->id }++ }
-              _RelatedTickets( $ticket, 'Members' );
-        }
-
-        @to_be_checked = @tickets;
-        while ( my $ticket = shift @to_be_checked ) {
-            push @tickets, $ticket
-              unless grep { $ticket->id eq $_->id } @tickets;
-            unshift @to_be_checked,
-              grep { !$checked{ $_->id }++ }
-              _RelatedTickets( $ticket, 'Members' );
-            unshift @to_be_checked,
-              grep { !$checked{ $_->id }++ }
-              _RelatedTickets( $ticket, 'MemberOf' );
-            push @to_be_checked, grep { !$checked{ $_->id }++ } _RelatedTickets(
-                $ticket, 'DependsOn', 'DependedOnBy', 'RefersTo',
-                'ReferredToBy'
-            );
-        }
+        _GetOrderedTickets( \@tickets, \@to_be_checked, \%checked );
     }
     return @tickets;
 }
@@ -261,6 +239,40 @@ sub _GetDate {
     for my $member_of ( @{ $ticket->MemberOf->ItemsArrayRef } ) {
         my $parent = $member_of->TargetObj;
         return _GetDate( $parent, $depth, @fields );
+    }
+}
+
+
+sub _GetOrderedTickets {
+    my $tickets       = shift;
+    my $to_be_checked = shift;
+    my $checked       = shift;
+    while ( my $ticket = shift @$to_be_checked ) {
+        push @$tickets, $ticket
+          unless grep { $ticket->id eq $_->id } @$tickets;
+        next if $checked->{$ticket->id}++;
+
+        for my $member ( grep { !$checked->{ $_->id } }
+            _RelatedTickets( $ticket, 'Members' ) )
+        {
+            unshift @$to_be_checked, $member;
+            _GetOrderedTickets( $tickets,$to_be_checked, $checked );
+        }
+
+        for my $parent ( grep { !$checked->{ $_->id } }
+            _RelatedTickets( $ticket, 'MemberOf' ) )
+        {
+            unshift @$to_be_checked, $parent;
+            _GetOrderedTickets( $tickets, $to_be_checked, $checked );
+        }
+
+        for my $related ( grep { !$checked->{ $_->id } }
+            _RelatedTickets( $ticket, 'DependsOn', 'DependedOnBy', 'RefersTo',
+            'ReferredToBy' ))
+        {
+            push @$to_be_checked, $related;
+            _GetOrderedTickets( $tickets, $to_be_checked, $checked );
+        }
     }
 }
 
