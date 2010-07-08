@@ -194,7 +194,7 @@ sub TicketsInfo {
 
     #let's tweak our results
     #set to now if all tickets don't have start/end dates
-    if ( !$min_start ) {
+    unless ( $min_start_obj && $min_start_obj->Unix ) {
         $min_start_obj = RT::Date->new( $args{CurrentUser} );
         $min_start_obj->SetToNow;
         my ( $day, $month, $year ) =
