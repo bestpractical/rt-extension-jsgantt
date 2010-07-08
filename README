@@ -23,7 +23,7 @@ How to install:
 
         # if we can't find both start and end dates, use this color
         Set($JSGanttNullDatesColor, '333');
-5. patch /Ticket/Elements/ShowSummary
+5. patch /Ticket/Elements/ShowSummary if you are using rt < 3.9
     $ patch /path/to/Ticket/Elements/ShowSummary < /path/to/showsummary.diff
 6. restart RT
 
