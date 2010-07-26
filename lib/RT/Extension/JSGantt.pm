@@ -279,7 +279,7 @@ sub _GetOrderedTickets {
 
 =head1 NAME
 
-RT::Extension::JSGantt - 
+RT::Extension::JSGantt - Gantt charts for your tickets
 
 
 =head1 SYNOPSIS
