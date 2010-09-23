@@ -1,5 +1,9 @@
 Revision history for RT-Extension-JSGantt
 
+0.04 Thu Sep 23 09:20:16 CST 2010
+
+    * in case there are remote links
+
 0.03 Wed Jun 30 02:49:02 CST 2010
 
     tweak the way we figure out Start/End Dates:

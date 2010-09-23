@@ -1,5 +1,5 @@
 ---
-abstract: ''
+abstract: 'Gantt charts for your tickets'
 author:
   - 'sunnavy C<< <sunnavy@bestpractical.com> >>'
   - 'sunnavy <sunnavy@bestpractical.com>'
@@ -8,7 +8,7 @@ build_requires:
 configure_requires:
   ExtUtils::MakeMaker: 6.42
 distribution_type: module
-generated_by: 'Module::Install version 0.98'
+generated_by: 'Module::Install version 1.00'
 license: gplv2
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -22,4 +22,4 @@ requires:
   JSON: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.03
+version: 0.04
