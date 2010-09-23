@@ -61,6 +61,8 @@ sub TicketsInfo {
 
         my $parent = 0;
         if ( $Ticket->MemberOf->Count ) {
+            # skip the remote links
+            next unless $Ticket->MemberOf->First->TargetObj;
             $parent = $Ticket->MemberOf->First->TargetObj->id;
         }
 
@@ -132,6 +134,8 @@ sub TicketsInfo {
         my @depends;
         if ( $depends->Count ) {
             while ( my $d = $depends->Next ) {
+                # skip the remote links
+                next unless $d->TargetObj; 
                 push @depends, $d->TargetObj->id;
             }
         }
