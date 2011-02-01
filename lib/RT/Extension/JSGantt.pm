@@ -66,60 +66,8 @@ sub TicketsInfo {
             $parent = $Ticket->MemberOf->First->TargetObj->id;
         }
 
-        # find start/end, this is, uhh, long long way to go
-        my ( $start_obj, $start ) = _GetDate( $Ticket, 'Starts', 'Started' );
-        my ( $end_obj, $end ) = _GetDate( $Ticket, 'Due' );
-
-        # if $start or $end is empty still
-        unless ( $start && $end ) {
-            my $hours_per_day = RT->Config->Get('JSGanttWorkingHoursPerDay')
-              || 8;
-            my $total_time =
-              defined $Ticket->TimeLeft && $Ticket->TimeLeft =~ /\d/
-              ? ( $Ticket->TimeWorked + $Ticket->TimeLeft )
-              : $Ticket->TimeEstimated;
-            $total_time ||= 0;
-            my $days = int( $total_time / ( 60 * $hours_per_day ) );
-            $days ||= RT->Config->Get('JSGanttDefaultDays') || 7;
-
-            # since we only use date without time, let's make days inclusive
-            # ( i.e. 5/12/2010 minus 3 days is 5/10/2010. 10,11,12, 3 days! )
-            $days = $days =~ /\./ ? int $days : $days - 1;
-            $days = 0 if $days < 0;
-
-            if ( $start && !$end ) {
-                $end_obj = RT::Date->new( $args{CurrentUser} );
-                $end_obj->Set( Value => $start_obj->Unix );
-                $end_obj->AddDays($days);
-                my ( $day, $month, $year ) =
-                  ( $end_obj->Localtime('user') )[ 3, 4, 5 ];
-                $end = join '/', $month + 1, $day, $year;
-            }
-
-            if ( $end && !$start ) {
-                $start_obj = RT::Date->new( $args{CurrentUser} );
-                $start_obj->Set( Value => $end_obj->Unix );
-                $start_obj->AddDays( -1 * $days );
-                my ( $day, $month, $year ) =
-                  ( $start_obj->Localtime('user') )[ 3, 4, 5 ];
-                $start = join '/', $month + 1, $day, $year;
-            }
-        }
-
-        if ( !$start ) {
-            $RT::Logger->warning( "Ticket "
-                  . $Ticket->id
-                  . " doesn't have Starts/Started defined, and we can't figure it out either"
-            );
-            $start = $end;
-        }
-        if ( !$end ) {
-            $RT::Logger->warning( "Ticket "
-                  . $Ticket->id
-                  . " doesn't have Due defined, and we can't figure it out either"
-            );
-            $end = $start;
-        }
+        # find start/end
+        my ( $start_obj, $start, $end_obj, $end ) = _GetTimeRange( $Ticket, %args );
 
         if ( $start_obj
             && ( !$min_start_obj || $min_start_obj->Unix > $start_obj->Unix ) )
@@ -191,6 +139,67 @@ sub TicketsInfo {
         $info{$id}{end}   ||= $min_start;
     }
     return \@ids, \%info;
+}
+
+sub _GetTimeRange {
+    my ( $Ticket, %args ) = @_;
+
+    # the, uh, long way
+    my ( $start_obj, $start ) = _GetDate( $Ticket, 'Starts', 'Started' );
+    my ( $end_obj, $end ) = _GetDate( $Ticket, 'Due' );
+
+    # if $start or $end is empty still
+    unless ( $start && $end ) {
+        my $hours_per_day = RT->Config->Get('JSGanttWorkingHoursPerDay')
+          || 8;
+        my $total_time =
+          defined $Ticket->TimeLeft && $Ticket->TimeLeft =~ /\d/
+          ? ( $Ticket->TimeWorked + $Ticket->TimeLeft )
+          : $Ticket->TimeEstimated;
+        $total_time ||= 0;
+        my $days = int( $total_time / ( 60 * $hours_per_day ) );
+        $days ||= RT->Config->Get('JSGanttDefaultDays') || 7;
+
+        # since we only use date without time, let's make days inclusive
+        # ( i.e. 5/12/2010 minus 3 days is 5/10/2010. 10,11,12, 3 days! )
+        $days = $days =~ /\./ ? int $days : $days - 1;
+        $days = 0 if $days < 0;
+
+        if ( $start && !$end ) {
+            $end_obj = RT::Date->new( $args{CurrentUser} );
+            $end_obj->Set( Value => $start_obj->Unix );
+            $end_obj->AddDays($days);
+            my ( $day, $month, $year ) =
+              ( $end_obj->Localtime('user') )[ 3, 4, 5 ];
+            $end = join '/', $month + 1, $day, $year;
+        }
+
+        if ( $end && !$start ) {
+            $start_obj = RT::Date->new( $args{CurrentUser} );
+            $start_obj->Set( Value => $end_obj->Unix );
+            $start_obj->AddDays( -1 * $days );
+            my ( $day, $month, $year ) =
+              ( $start_obj->Localtime('user') )[ 3, 4, 5 ];
+            $start = join '/', $month + 1, $day, $year;
+        }
+    }
+
+    if ( !$start ) {
+        $RT::Logger->warning( "Ticket "
+              . $Ticket->id
+              . " doesn't have Starts/Started defined, and we can't figure it out either"
+        );
+        $start = $end if $end;
+    }
+    if ( !$end ) {
+        $RT::Logger->warning( "Ticket "
+              . $Ticket->id
+              . " doesn't have Due defined, and we can't figure it out either"
+        );
+        $end = $start if $start;
+    }
+
+    return ( $start_obj, $start, $end_obj, $end );
 }
 
 sub _RelatedTickets {
