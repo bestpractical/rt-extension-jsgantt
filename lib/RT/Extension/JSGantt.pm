@@ -185,6 +185,22 @@ sub _GetTimeRange {
     }
 
     if ( !$start ) {
+        my $Transactions = $Ticket->Transactions;
+        while ( my $Transaction = $Transactions->Next ) {
+            next
+              unless $Transaction->TimeTaken
+                  || (   $Transaction->Type eq 'Set'
+                      && $Transaction->Field eq 'TimeWorked'
+                      && $Transaction->NewValue > $Transaction->OldValue );
+            $start_obj = $Transaction->CreatedObj;
+            my ( $day, $month, $year ) =
+              ( $start_obj->Localtime('user') )[ 3, 4, 5 ];
+            $start = join '/', $month + 1, $day, $year;
+            last;
+        }
+    }
+
+    if ( !$start ) {
         $RT::Logger->warning( "Ticket "
               . $Ticket->id
               . " doesn't have Starts/Started defined, and we can't figure it out either"
