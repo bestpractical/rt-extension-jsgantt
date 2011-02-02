@@ -9,20 +9,22 @@ How to install:
     # add RT::Extension::JSGantt to @Plugins: e.g.
         Set(@Plugins,'RT::Extension::JSGantt');
     # customize JSGantt as you wish:
-        Set($JSGanttDefaultFormat,'month'); # or day or year or quarter
-        Set($JSGanttShowDuration,1);
-        Set($JSGanttShowOwner,1);
-        Set($JSGanttShowProgress,1);
-        Set(@JSGanttColorScheme, 'ff0000', 'ffff00', 'ff00ff', '00ff00', '00ffff', '0000ff');
 
-        # working hours per day, used to caculate day length
-        Set($JSGanttWorkingHoursPerDay, 8); 
+    Set(
+        %JSGanttOptions,
+        DefaultFormat => 'day', # or week or month or quarter
+        ShowOwner     => 1,
+        ShowProgress  => 1,
+        ShowDuration  => 1,
+        ColorScheme => ['ff0000', 'ffff00', 'ff00ff', '00ff00', '00ffff', '0000ff'],
+        # if can't find both start and end dates, use this color
+        NullDatesColor => 333,
+        # to caculate day length
+        WorkingHoursPerDay => 8,
+        # used to set start/end if one exists but the other does not
+        DefaultDays => 7,
+    );
 
-        # default day length, used to figure out start/end if one exists but the other not
-        Set($JSGanttDefaultDays, 7);
-
-        # if we can't find both start and end dates, use this color
-        Set($JSGanttNullDatesColor, '333');
 5. patch /Ticket/Elements/ShowSummary if you are using rt < 3.9
     $ patch /path/to/Ticket/Elements/ShowSummary < /path/to/showsummary.diff
 6. restart RT
