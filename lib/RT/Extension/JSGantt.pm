@@ -148,6 +148,23 @@ sub _GetTimeRange {
     my ( $start_obj, $start ) = _GetDate( $Ticket, 'Starts', 'Started' );
     my ( $end_obj, $end ) = _GetDate( $Ticket, 'Due' );
 
+    if ( !$start ) {
+        my $Transactions = $Ticket->Transactions;
+        while ( my $Transaction = $Transactions->Next ) {
+            next
+              unless $Transaction->TimeTaken
+                  || (   $Transaction->Type eq 'Set'
+                      && $Transaction->Field eq 'TimeWorked'
+                      && $Transaction->NewValue > $Transaction->OldValue );
+            $start_obj = $Transaction->CreatedObj;
+            my ( $day, $month, $year ) =
+              ( $start_obj->Localtime('user') )[ 3, 4, 5 ];
+            $start = join '/', $month + 1, $day, $year;
+            last;
+        }
+    }
+
+
     # if $start or $end is empty still
     unless ( $start && $end ) {
         my $hours_per_day = RT->Config->Get('JSGanttWorkingHoursPerDay')
@@ -181,22 +198,6 @@ sub _GetTimeRange {
             my ( $day, $month, $year ) =
               ( $start_obj->Localtime('user') )[ 3, 4, 5 ];
             $start = join '/', $month + 1, $day, $year;
-        }
-    }
-
-    if ( !$start ) {
-        my $Transactions = $Ticket->Transactions;
-        while ( my $Transaction = $Transactions->Next ) {
-            next
-              unless $Transaction->TimeTaken
-                  || (   $Transaction->Type eq 'Set'
-                      && $Transaction->Field eq 'TimeWorked'
-                      && $Transaction->NewValue > $Transaction->OldValue );
-            $start_obj = $Transaction->CreatedObj;
-            my ( $day, $month, $year ) =
-              ( $start_obj->Localtime('user') )[ 3, 4, 5 ];
-            $start = join '/', $month + 1, $day, $year;
-            last;
         }
     }
 
