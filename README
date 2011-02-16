@@ -26,7 +26,7 @@ How to install:
     );
 
 5. patch /Ticket/Elements/ShowSummary if you are using rt < 3.9
-    $ patch /path/to/Ticket/Elements/ShowSummary < /path/to/showsummary.diff
+    $ patch /path/to/Ticket/Elements/ShowSummary < /path/to/rt/local/plugins/RT-Extension-JSGantt/etc/jsgantt-showsummary.diff
 6. restart RT
 
 

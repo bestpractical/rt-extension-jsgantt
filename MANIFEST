@@ -1,5 +1,5 @@
 Changes
-showsummary.diff
+etc/jsgantt-showsummary.diff
 html/Callbacks/JSGantt/Elements/Header/Head
 html/Callbacks/JSGantt/Search/Elements/ResultViews/AfterTools
 html/NoAuth/css/jsgantt.css
