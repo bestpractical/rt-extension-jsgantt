@@ -1,5 +1,10 @@
 Revision history for RT-Extension-JSGantt
 
+0.10 Thu Mar 31 14:59:47 CST 2011
+
+    * use a generic JSGanttOptions config, see README for example
+    * make it work with RT 4
+
 0.04 Thu Sep 23 09:20:16 CST 2010
 
     * in case there are remote links
