@@ -20,4 +20,4 @@ no_index:
     - inc
 requires:
   JSON: 0
-version: 0.10
+version: 0.11

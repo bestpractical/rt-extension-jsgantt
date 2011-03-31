@@ -2,7 +2,7 @@
 #
 # COPYRIGHT:
 #
-# This software is Copyright (c) 1996-2010 Best Practical Solutions, LLC
+# This software is Copyright (c) 1996-2011 Best Practical Solutions, LLC
 #                                          <jesse@bestpractical.com>
 #
 # (Except where explicitly superseded by other copyright notices)
@@ -58,7 +58,7 @@ RT::Extension::JSGantt - Gantt charts for your tickets
 
 package RT::Extension::JSGantt;
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 use warnings;
 use strict;
