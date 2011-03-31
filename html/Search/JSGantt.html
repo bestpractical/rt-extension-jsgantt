@@ -60,7 +60,10 @@
 my $title = loc('JSGantt Results');
 my @Tickets;
 
-my %options = RT->Config->Get('JSGanttOptions');
+my %options;
+if ( RT->Config->Get('JSGanttOptions') ) {
+    %options = RT->Config->Get('JSGanttOptions');
+}
 if ( $Ticket ) {
     @Tickets = RT::Extension::JSGantt->AllRelatedTickets(
         Ticket     => $Ticket,
