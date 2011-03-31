@@ -1,7 +1,10 @@
 Changes
 etc/jsgantt-showsummary.diff
+etc/jsgantt.diff
 html/Callbacks/JSGantt/Elements/Header/Head
+html/Callbacks/JSGantt/Elements/Tabs/Privileged
 html/Callbacks/JSGantt/Search/Elements/ResultViews/AfterTools
+html/Callbacks/JSGantt/Ticket/Elements/ShowSummary/LinksExtra
 html/NoAuth/css/jsgantt.css
 html/NoAuth/js/jsgantt.js
 html/Search/JSGantt.html
