@@ -2,7 +2,7 @@
     Refresh => $session{'tickets_refresh_interval'} || RT->Config->Get('SearchResultsRefreshInterval', $session{'CurrentUser'} ),
     &>
 
-% if ( $RT::VERSION lt '3.9.6' ) {
+% if ( $m->comp_exists( '/Ticket/Elements/Tabs' ) ) {
 <& /Ticket/Elements/Tabs, Title => $title, Query => $ARGS{Query}, &>
 % } else {
 <& /Elements/Tabs &>
