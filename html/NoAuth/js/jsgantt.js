@@ -573,7 +573,11 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat)
 * @type String 
 * @default "mm/dd/yy"
 * @private
+% if ( RT->Config->Get('DateDayBeforeMonth') ) {
+*/var vDateDisplayFormat = "dd/mm/yy";
+% } else {
 */var vDateDisplayFormat = "mm/dd/yy";
+% }
 
 	  var vNumUnits  = 0;
       var vCaptionType;
