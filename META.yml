@@ -22,4 +22,4 @@ requires:
   JSON: 0
 resources:
   repository: git://github.com/bestpractical/rt-extension-jsgantt.git
-version: 0.12
+version: 0.13
