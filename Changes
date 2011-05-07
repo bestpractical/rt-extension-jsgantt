@@ -1,5 +1,9 @@
 Revision history for RT-Extension-JSGantt
 
+0.12 Sat May  7 19:55:01 CST 2011
+
+    * respect DateDayBeforeMonth config
+
 0.10 Thu Mar 31 14:59:47 CST 2011
 
     * use a generic JSGanttOptions config, see README for example
