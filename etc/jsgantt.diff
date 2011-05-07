@@ -10,7 +10,7 @@ index 683fcad..5845df1 100755
 +DIV.scroll2 { position:relative; PADDING-RIGHT: 0px; overflow:auto ;overflow-x:scroll;overflow-y:hidden; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; WIDTH: 720px; PADDING-TOP: 0px; BACKGROUND-COLOR: #ffffff }
  
 diff --git b/html/NoAuth/js/jsgantt.js a/html/NoAuth/js/jsgantt.js
-index fe99c57..9232df6 100755
+index fe99c57..8a9eaba 100755
 --- b/html/NoAuth/js/jsgantt.js
 +++ a/html/NoAuth/js/jsgantt.js
 @@ -573,7 +573,11 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat)
@@ -73,7 +73,33 @@ index fe99c57..9232df6 100755
                 vTmpDate.setDate(vTmpDate.getDate() + 81);
                 while(vTmpDate.getDate() > 1)
                 {
-@@ -1910,9 +1909,9 @@ JSGantt.folder= function (pID,ganttObj) {
+@@ -1247,14 +1246,25 @@ Complete-Displays task percent complete</p>
+                   vWeekdayColor = "ffffff";
+ 
+                if(vNxtDate <= vMaxDate) {
++
++% if ( RT->Config->Get('DateDayBeforeMonth') ) {
++                  vDateRowStr += '<td class="ghead" style="BORDER-TOP: #efefef 1px solid; FONT-SIZE: 12px; HEIGHT: 19px; BORDER-LEFT: #efefef 1px solid;" bgcolor=#' + vWeekdayColor + ' align=center width:'+vColWidth+'px><div style="width: '+vColWidth+'px">' + vTmpDate.getDate() + '/'  + (vTmpDate.getMonth()+1) + '</div></td>';
++% } else {
+                   vDateRowStr += '<td class="ghead" style="BORDER-TOP: #efefef 1px solid; FONT-SIZE: 12px; HEIGHT: 19px; BORDER-LEFT: #efefef 1px solid;" bgcolor=#' + vWeekdayColor + ' align=center width:'+vColWidth+'px><div style="width: '+vColWidth+'px">' + (vTmpDate.getMonth()+1) + '/' + vTmpDate.getDate() + '</div></td>';
++
++% }
+                   if( vCurrDate >= vTmpDate && vCurrDate < vNxtDate ) 
+                      vItemRowStr += '<td class="ghead" style="BORDER-TOP: #efefef 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #efefef 1px solid;" bgcolor=#' + vWeekdayColor + ' align=center><div style="width: '+vColWidth+'px">&nbsp&nbsp</div></td>';
+                   else
+                      vItemRowStr += '<td class="ghead" style="BORDER-TOP: #efefef 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #efefef 1px solid;" align=center><div style="width: '+vColWidth+'px">&nbsp&nbsp</div></td>';
+ 
+                } else {
++% if ( RT->Config->Get('DateDayBeforeMonth') ) {
++                  vDateRowStr += '<td class="ghead" style="BORDER-TOP: #efefef 1px solid; FONT-SIZE: 12px; HEIGHT: 19px; BORDER-LEFT: #efefef 1px solid; bgcolor=#' + vWeekdayColor + ' BORDER-RIGHT: #efefef 1px solid;" align=center width:'+vColWidth+'px><div style="width: '+vColWidth+'px">' +  vTmpDate.getDate() + '/' + (vTmpDate.getMonth()+1) + '</div></td>';
++% } else {
+                   vDateRowStr += '<td class="ghead" style="BORDER-TOP: #efefef 1px solid; FONT-SIZE: 12px; HEIGHT: 19px; BORDER-LEFT: #efefef 1px solid; bgcolor=#' + vWeekdayColor + ' BORDER-RIGHT: #efefef 1px solid;" align=center width:'+vColWidth+'px><div style="width: '+vColWidth+'px">' + (vTmpDate.getMonth()+1) + '/' + vTmpDate.getDate() + '</div></td>';
++
++% }
+                   if( vCurrDate >= vTmpDate && vCurrDate < vNxtDate ) 
+                      vItemRowStr += '<td class="ghead" style="BORDER-TOP: #efefef 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #efefef 1px solid; BORDER-RIGHT: #efefef 1px solid;" bgcolor=#' + vWeekdayColor + ' align=center><div style="width: '+vColWidth+'px">&nbsp&nbsp</div></td>';
+                   else
+@@ -1910,9 +1920,9 @@ JSGantt.folder= function (pID,ganttObj) {
              JSGantt.show(pID, 1, ganttObj);
  
                 if (JSGantt.isIE()) 
@@ -85,7 +111,7 @@ index fe99c57..9232df6 100755
  
           }
  
-@@ -1984,7 +1983,7 @@ JSGantt.show =  function (pID, pTop, ganttObj) {
+@@ -1984,7 +1994,7 @@ JSGantt.show =  function (pID, pTop, ganttObj) {
           } else {
  
              if (JSGantt.isIE()) { // IE;
@@ -94,7 +120,7 @@ index fe99c57..9232df6 100755
                    JSGantt.findObj('child_'+vID).style.display = "";
                    JSGantt.findObj('childgrid_'+vID).style.display = "";
                    vList[i].setVisible(1);
-@@ -1992,7 +1991,7 @@ JSGantt.show =  function (pID, pTop, ganttObj) {
+@@ -1992,7 +2002,7 @@ JSGantt.show =  function (pID, pTop, ganttObj) {
  
              } else {
  
@@ -103,7 +129,7 @@ index fe99c57..9232df6 100755
                    JSGantt.findObj('child_'+vID).style.display = "";
                    JSGantt.findObj('childgrid_'+vID).style.display = "";
                    vList[i].setVisible(1);
-@@ -2019,10 +2018,11 @@ JSGantt.taskLink = function(pRef,pWidth,pHeight)
+@@ -2019,10 +2029,11 @@ JSGantt.taskLink = function(pRef,pWidth,pHeight)
  
    {
  
