@@ -1,5 +1,7 @@
 Revision history for RT-Extension-JSGantt
 
+0.14
+
 0.13 Sat Oct  8 15:56:53 CST 2011
 
     * fix the alignment bug in chrome/safari/ie8
