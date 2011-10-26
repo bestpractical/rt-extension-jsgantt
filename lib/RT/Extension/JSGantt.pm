@@ -136,7 +136,8 @@ sub TicketsInfo {
     my %color_map;
     if ( $options{ColorSchemeByOwner} ) {
         my @owner_names = uniq map { $_->OwnerObj->Name } @{ $args{Tickets} };
-        @color_map{@owner_names} = @colors[0 .. $#owner_names];
+        @color_map{@owner_names} =
+          (@colors) x ( int @colors / @owner_names + 1 );
         if (   ref $options{ColorSchemeByOwner}
             && ref $options{ColorSchemeByOwner} eq 'HASH' )
         {
