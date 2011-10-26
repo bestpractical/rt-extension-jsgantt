@@ -134,6 +134,7 @@ sub TicketsInfo {
     my ( $min_start, $min_start_obj );
 
     my %color_map;
+    $options{ColorSchemeByOwner} = 1 unless exists $options{ColorSchemeByOwner};
     if ( $options{ColorSchemeByOwner} ) {
         my @owner_names = uniq map { $_->OwnerObj->Name } @{ $args{Tickets} };
         @color_map{@owner_names} =
