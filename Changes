@@ -1,6 +1,10 @@
 Revision history for RT-Extension-JSGantt
 
-0.14
+0.14 Wed Oct 26 18:47:18 CST 2011
+
+    * add ColorSchemeByOwner option to use one color for each user.
+    * improve the way we sort related tickets so children can appear just after their parents.
+    * has_members now is true only if the ticket is the first parent of some of its children
 
 0.13 Sat Oct  8 15:56:53 CST 2011
 
