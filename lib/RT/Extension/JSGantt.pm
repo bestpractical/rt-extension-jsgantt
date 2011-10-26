@@ -53,7 +53,7 @@ RT::Extension::JSGantt - Gantt charts for your tickets
 =head1 SYNOPSIS
 
     use RT::Extension::JSGantt;
-  
+
 =cut
 
 package RT::Extension::JSGantt;
@@ -99,7 +99,9 @@ sub AllRelatedTickets {
             }
         }
 
-        _GetOrderedTickets( \@tickets, \@to_be_checked, \%checked );
+        _GetOrderedTickets( \@tickets, \@to_be_checked, \%checked,
+            'Members' );
+        _GetOrderedTickets( \@tickets, [@tickets], {}, );
     }
     return @tickets;
 }
@@ -159,7 +161,7 @@ sub TicketsInfo {
         if ( $depends->Count ) {
             while ( my $d = $depends->Next ) {
                 # skip the remote links
-                next unless $d->TargetObj; 
+                next unless $d->TargetObj;
                 push @depends, $d->TargetObj->id;
             }
         }
@@ -333,7 +335,7 @@ sub _GetDate {
     my $depth;
     if ( $_[0] =~ /^\d+$/ ) {
         $depth = shift;
-    } 
+    }
     else {
         $depth = 0;
     }
@@ -366,32 +368,42 @@ sub _GetOrderedTickets {
     my $tickets       = shift;
     my $to_be_checked = shift;
     my $checked       = shift;
-    while ( my $ticket = shift @$to_be_checked ) {
-        push @$tickets, $ticket
-          unless grep { $ticket->id eq $_->id } @$tickets;
-        next if $checked->{$ticket->id}++;
+    my $type          = shift;
 
-        for my $member ( grep { !$checked->{ $_->id } }
-            _RelatedTickets( $ticket, 'Members' ) )
-        {
-            unshift @$to_be_checked, $member;
-            _GetOrderedTickets( $tickets,$to_be_checked, $checked );
+
+    if ( $type && $type eq 'Members' ) {
+        while ( my $ticket = shift @$to_be_checked ) {
+            push @$tickets, $ticket
+              unless grep { $ticket->id eq $_->id } @$tickets;
+            next if $checked->{ $ticket->id }++;
+
+            for my $member ( grep { !$checked->{ $_->id } }
+                _RelatedTickets( $ticket, 'Members' ) )
+            {
+                push @$to_be_checked, $member;
+                _GetOrderedTickets( $tickets, $to_be_checked, $checked,
+                    'Members' );
+            }
+        }
+    }
+    else {
+        while ( my $ticket = shift @$to_be_checked ) {
+            push @$tickets, $ticket
+              unless grep { $ticket->id eq $_->id } @$tickets;
+            next if $checked->{ $ticket->id }++;
+
+            for my $related (
+                grep { !$checked->{ $_->id } } _RelatedTickets(
+                    $ticket,    'MemberOf', 'DependsOn', 'DependedOnBy',
+                    'RefersTo', 'ReferredToBy'
+                )
+              )
+            {
+                push @$to_be_checked, $related;
+                _GetOrderedTickets( $tickets, $to_be_checked, $checked );
+            }
         }
 
-        for my $parent ( grep { !$checked->{ $_->id } }
-            _RelatedTickets( $ticket, 'MemberOf' ) )
-        {
-            unshift @$to_be_checked, $parent;
-            _GetOrderedTickets( $tickets, $to_be_checked, $checked );
-        }
-
-        for my $related ( grep { !$checked->{ $_->id } }
-            _RelatedTickets( $ticket, 'DependsOn', 'DependedOnBy', 'RefersTo',
-            'ReferredToBy' ))
-        {
-            push @$to_be_checked, $related;
-            _GetOrderedTickets( $tickets, $to_be_checked, $checked );
-        }
     }
 }
 
