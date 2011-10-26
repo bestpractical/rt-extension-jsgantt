@@ -155,6 +155,21 @@ sub TicketsInfo {
         }
 
         my $has_members = $Ticket->Members->Count ? 1 : 0;
+        if ($has_members) {
+
+           # need to examine more as it may not the first parent of it's members
+            my $members = $Ticket->Members;
+            my $indeed_has_members;
+            while ( my $member = $members->Next ) {
+                if ( $member->BaseObj->MemberOf->First->TargetObj->id == $Ticket->id )
+                {
+                    $indeed_has_members = 1;
+                    last;
+                }
+            }
+
+            $has_members = $indeed_has_members || 0;
+        }
 
         my $depends = $Ticket->DependsOn;
         my @depends;
