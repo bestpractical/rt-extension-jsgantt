@@ -8,5 +8,6 @@ license('GPLv2');
 repository 'git://github.com/bestpractical/rt-extension-jsgantt.git';
 
 requires( 'JSON' );
+requires( 'List::MoreUtils' );
 
 &WriteAll;

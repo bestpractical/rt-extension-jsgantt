@@ -62,6 +62,7 @@ our $VERSION = '0.14';
 
 use warnings;
 use strict;
+use List::MoreUtils 'insert_after';
 
 =head2 AllRelatedTickets
 
@@ -134,12 +135,8 @@ sub TicketsInfo {
         my $progress = 0;
         my $subject = $Ticket->Subject;
 
-        my $parent = 0;
-        if ( $Ticket->MemberOf->Count ) {
-            # skip the remote links
-            next unless $Ticket->MemberOf->First->TargetObj;
-            $parent = $Ticket->MemberOf->First->TargetObj->id;
-        }
+        my $parent = _ParentTicket( $Ticket );
+        $parent = $parent ? $parent->id : 0;
 
         # find start/end
         my ( $start_obj, $start, $end_obj, $end ) = _GetTimeRange( $Ticket, %args );
@@ -381,7 +378,7 @@ sub _GetOrderedTickets {
 
     my %map;
     __GetOrderedTickets( \@tickets, \@to_be_checked, {}, 'Members' );
-    __GetOrderedTickets( \@tickets, \@to_be_checked, {}, );
+    __GetOrderedTickets( \@tickets, [@tickets], {}, );
     return @tickets;
 }
 
@@ -394,12 +391,20 @@ sub __GetOrderedTickets {
 
     if ( $type && $type eq 'Members' ) {
         while ( my $ticket = shift @$to_be_checked ) {
-            push @$tickets, $ticket
-              unless grep { $ticket->id eq $_->id } @$tickets;
+            unless ( grep { $ticket->id eq $_->id } @$tickets ) {
+                my $parent = _ParentTicket($ticket);
+
+                if ( !$parent || !insert_after { $_->id == $parent->id } $ticket,
+                    @$tickets )
+                {
+                    push @$tickets, $ticket;
+                }
+            }
+
             next if $checked->{ $ticket->id }++;
 
             for my $member ( grep { !$checked->{ $_->id } }
-                _RelatedTickets( $ticket, 'Members' ) )
+                sort { $b->id <=> $a->id } _RelatedTickets( $ticket, 'Members' ) )
             {
                 push @$to_be_checked, $member;
                 __GetOrderedTickets( $tickets, $to_be_checked, $checked,
@@ -426,6 +431,16 @@ sub __GetOrderedTickets {
         }
 
     }
+}
+
+sub _ParentTicket {
+    my $ticket = shift;
+    if ( $ticket->MemberOf->Count ) {
+        # skip the remote links
+        next unless $ticket->MemberOf->First->TargetObj;
+        return $ticket->MemberOf->First->TargetObj;
+    }
+    return;
 }
 
 1;
