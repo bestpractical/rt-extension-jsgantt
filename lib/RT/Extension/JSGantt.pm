@@ -98,8 +98,7 @@ sub AllRelatedTickets {
             }
         }
 
-        _GetOrderedTickets( \@tickets, \@to_be_checked, {}, 'Members' );
-        _GetOrderedTickets( \@tickets, [@tickets], {}, );
+        @tickets = _GetOrderedTickets( @to_be_checked );
     }
     return @tickets;
 }
@@ -376,8 +375,17 @@ sub _GetDate {
     }
 }
 
-
 sub _GetOrderedTickets {
+    my @tickets;
+    my @to_be_checked = @_;
+
+    my %map;
+    __GetOrderedTickets( \@tickets, \@to_be_checked, {}, 'Members' );
+    __GetOrderedTickets( \@tickets, \@to_be_checked, {}, );
+    return @tickets;
+}
+
+sub __GetOrderedTickets {
     my $tickets       = shift;
     my $to_be_checked = shift;
     my $checked       = shift;
@@ -394,7 +402,7 @@ sub _GetOrderedTickets {
                 _RelatedTickets( $ticket, 'Members' ) )
             {
                 push @$to_be_checked, $member;
-                _GetOrderedTickets( $tickets, $to_be_checked, $checked,
+                __GetOrderedTickets( $tickets, $to_be_checked, $checked,
                     'Members' );
             }
         }
@@ -413,7 +421,7 @@ sub _GetOrderedTickets {
               )
             {
                 push @$to_be_checked, $related;
-                _GetOrderedTickets( $tickets, $to_be_checked, $checked );
+                __GetOrderedTickets( $tickets, $to_be_checked, $checked );
             }
         }
 
