@@ -16,7 +16,10 @@ How to install:
         ShowOwner     => 1,
         ShowProgress  => 1,
         ShowDuration  => 1,
+        # define your own color scheme
         ColorScheme => ['ff0000', 'ffff00', 'ff00ff', '00ff00', '00ffff', '0000ff'],
+        # use the same color for each owner and specify colors to use for some owners
+        ColorSchemeByOwner => { root => 'ff0000', foo => '00ff00' },
         # if can't find both start and end dates, use this color
         NullDatesColor => 333,
         # to caculate day length

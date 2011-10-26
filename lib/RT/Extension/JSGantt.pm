@@ -62,7 +62,7 @@ our $VERSION = '0.14';
 
 use warnings;
 use strict;
-use List::MoreUtils 'insert_after';
+use List::MoreUtils 'insert_after', 'uniq';
 
 =head2 AllRelatedTickets
 
@@ -124,12 +124,25 @@ sub TicketsInfo {
         @colors = @{$options{ColorScheme}};
     }
     else {
-        @colors =
-          ( 'ff0000', 'ffff00', 'ff00ff', '00ff00', '00ffff', '0000ff' );
+        @colors = (
+            '66cc66', 'ff6666', 'ffcc66', '663399', '3333cc', '339933',
+            '993333', '996633', '33cc33', 'cc3333', 'cc9933', '6633cc'
+        );
     }
     my $i;
 
     my ( $min_start, $min_start_obj );
+
+    my %color_map;
+    if ( $options{ColorSchemeByOwner} ) {
+        my @owner_names = uniq map { $_->OwnerObj->Name } @{ $args{Tickets} };
+        @color_map{@owner_names} = @colors[0 .. $#owner_names];
+        if (   ref $options{ColorSchemeByOwner}
+            && ref $options{ColorSchemeByOwner} eq 'HASH' )
+        {
+            %color_map = ( %color_map, %{ $options{ColorSchemeByOwner} } );
+        }
+    }
 
     for my $Ticket (@{$args{Tickets}}) {
         my $progress = 0;
@@ -192,8 +205,12 @@ sub TicketsInfo {
             name  => ( $Ticket->id . ': ' . substr $subject, 0, 30 ),
             start => $start,
             end   => $end,
-            color => $colors[ $i++ % @colors ],
-            link  => (
+            color => (
+                  $options{ColorSchemeByOwner}
+                ? $color_map{ $Ticket->OwnerObj->Name }
+                : $colors[ $i++ % @colors ]
+            ),
+            link => (
                     RT->Config->Get('WebPath')
                   . '/Ticket/Display.html?id='
                   . $Ticket->id
