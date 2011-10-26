@@ -17,8 +17,8 @@ How to install:
         ShowProgress  => 1,
         ShowDuration  => 1,
 
-        # define your own color scheme
-        ColorScheme => ['ff0000', 'ffff00', 'ff00ff', '00ff00', '00ffff', '0000ff'],
+        # define your own color scheme:
+        # ColorScheme => ['ff0000', 'ffff00', 'ff00ff', '00ff00', '00ffff', '0000ff'],
 
         # we color owners consistently by default, you can disable it via:
         # ColorSchemeByOwner => 0,
