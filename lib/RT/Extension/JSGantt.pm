@@ -74,7 +74,6 @@ sub AllRelatedTickets {
     my %args = ( Ticket => undef, CurrentUser => undef, @_ );
 
     my @tickets;
-    my %checked;
     my @to_be_checked;
     my $ticket = RT::Ticket->new( $args{CurrentUser} );
     $ticket->Load( $args{Ticket} );
@@ -99,8 +98,7 @@ sub AllRelatedTickets {
             }
         }
 
-        _GetOrderedTickets( \@tickets, \@to_be_checked, \%checked,
-            'Members' );
+        _GetOrderedTickets( \@tickets, \@to_be_checked, {}, 'Members' );
         _GetOrderedTickets( \@tickets, [@tickets], {}, );
     }
     return @tickets;
