@@ -117,7 +117,7 @@ sub TicketsInfo {
 
 
     my ( @ids, %info );
-    my %options = RT->Config->Get('JSGanttOptions');
+    my %options = RT->Config->Get('JSGanttOptions') || ();
 
     my @colors;
     if ( $options{ColorScheme} ) {
@@ -248,7 +248,7 @@ $start and $end are strings like 3/21/2011
 
 sub _GetTimeRange {
     my ( $Ticket, %args ) = @_;
-    my %options = RT->Config->Get('JSGanttOptions');
+    my %options = RT->Config->Get('JSGanttOptions') || ();
 
     # the, uh, long way
     my ( $start_obj, $start ) = _GetDate( $Ticket, 'Starts', 'Started' );
