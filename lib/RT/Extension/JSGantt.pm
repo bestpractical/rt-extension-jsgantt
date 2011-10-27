@@ -150,7 +150,7 @@ sub TicketsInfo {
         my $progress = 0;
         my $subject = $Ticket->Subject;
 
-        my $parent = _ParentTicket( $Ticket );
+        my $parent = _ParentTicket( $Ticket, $args{Tickets} );
         $parent = $parent ? $parent->id : 0;
 
         # find start/end
@@ -161,23 +161,6 @@ sub TicketsInfo {
         {
             $min_start_obj = $start_obj;
             $min_start     = $start;
-        }
-
-        my $has_members = $Ticket->Members->Count ? 1 : 0;
-        if ($has_members) {
-
-           # need to examine more as it may not the first parent of it's members
-            my $members = $Ticket->Members;
-            my $indeed_has_members;
-            while ( my $member = $members->Next ) {
-                if ( $member->BaseObj->MemberOf->First->TargetObj->id == $Ticket->id )
-                {
-                    $indeed_has_members = 1;
-                    last;
-                }
-            }
-
-            $has_members = $indeed_has_members || 0;
         }
 
         my $depends = $Ticket->DependsOn;
@@ -221,11 +204,18 @@ sub TicketsInfo {
             owner =>
               ( $Ticket->OwnerObj->Name || $Ticket->OwnerObj->EmailAddress ),
             progress    => $progress,
-            has_members => $has_members,
             parent      => $parent,
             open        => 1,
             depends     => ( @depends ? join ',', @depends : 0 )
         };
+    }
+
+    {
+        my @parents = uniq map { $_->{parent} || () } values %info;
+        for my $parent (@parents) {
+            next unless $info{$parent};
+            $info{$parent}{has_members} = 1;
+        }
     }
 
     #let's tweak our results
@@ -411,7 +401,7 @@ sub __GetOrderedTickets {
     if ( $type && $type eq 'Members' ) {
         while ( my $ticket = shift @$to_be_checked ) {
             unless ( grep { $ticket->id eq $_->id } @$tickets ) {
-                my $parent = _ParentTicket($ticket);
+                my $parent = _ParentTicket($ticket, $tickets);
 
                 if ( !$parent || !insert_after { $_->id == $parent->id } $ticket,
                     @$tickets )
@@ -454,10 +444,15 @@ sub __GetOrderedTickets {
 
 sub _ParentTicket {
     my $ticket = shift;
-    if ( $ticket->MemberOf->Count ) {
-        # skip the remote links
-        next unless $ticket->MemberOf->First->TargetObj;
-        return $ticket->MemberOf->First->TargetObj;
+    my $candidates = shift || [];
+    my @parents = _RelatedTickets( $ticket, 'MemberOf' );
+    if (@parents) {
+        for my $candidate (@$candidates) {
+            if ( grep { $_->id == $candidate->id } @parents ) {
+                return $candidate;
+            }
+        }
+        return $parents[0];
     }
     return;
 }
