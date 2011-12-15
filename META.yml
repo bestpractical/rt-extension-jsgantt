@@ -24,4 +24,4 @@ requires:
   List::MoreUtils: 0
 resources:
   repository: git://github.com/bestpractical/rt-extension-jsgantt.git
-version: 0.17
+version: 0.18
