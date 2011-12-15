@@ -1,6 +1,8 @@
 Revision history for RT-Extension-JSGantt
 
-0.17
+0.17 Thu Dec 15 11:58:40 CST 2011
+
+    * fix a bug of config
 
 0.16 Thu Oct 27 10:29:51 CST 2011
 
