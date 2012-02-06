@@ -48,13 +48,6 @@
 <%INIT>
 my $request_path = $HTML::Mason::Commands::r->path_info;
 
-my $query_string = sub {
-    my %args = @_;
-    my $u    = URI->new();
-    $u->query_form(%args);
-    return $u->query;
-};
-
 if ( $request_path =~ qr{^/Search/Results.html} ) {
     my $tabs = PageMenu;
     $tabs->child( 'gantt' => title => loc('Gantt Chart'),
