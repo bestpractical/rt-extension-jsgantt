@@ -1,6 +1,8 @@
 Revision history for RT-Extension-JSGantt
 
-0.18
+0.18 Tue Feb  7 02:27:48 CST 2012
+
+    * fix the double-encode bug in page menu links below /Search
 
 0.17 Thu Dec 15 11:58:40 CST 2011
 
