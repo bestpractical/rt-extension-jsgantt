@@ -58,7 +58,7 @@ RT::Extension::JSGantt - Gantt charts for your tickets
 
 package RT::Extension::JSGantt;
 
-our $VERSION = '0.18';
+our $VERSION = '0.19';
 
 use warnings;
 use strict;
