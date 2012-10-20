@@ -1,6 +1,8 @@
 Revision history for RT-Extension-JSGantt
 
-0.19
+0.19 Sat Oct 20 12:14:51 CST 2012
+
+    * bump m:i to avoid it's bug in 1.04
 
 0.18 Tue Feb  7 02:27:48 CST 2012
 
