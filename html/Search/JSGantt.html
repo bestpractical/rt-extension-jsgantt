@@ -2,13 +2,7 @@
     Refresh => $session{'tickets_refresh_interval'} || RT->Config->Get('SearchResultsRefreshInterval', $session{'CurrentUser'} ),
     &>
 
-% if ( $m->comp_exists( '/Ticket/Elements/Tabs' ) ) {
-<& /Ticket/Elements/Tabs, Title => $title, Query => $ARGS{Query}, &>
-% } else {
 <& /Elements/Tabs &>
-%# this space is to make following elements a bit lower to avoid overlap
-%# &nbsp;
-% }
 
 <div style="position:relative" class="gantt" id="GanttChartDIV"></div>
 <script>
