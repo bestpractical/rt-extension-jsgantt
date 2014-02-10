@@ -1,6 +1,9 @@
 Revision history for RT-Extension-JSGantt
 
-0.20
+0.20 Mon Feb 10 19:25:33 CST 2014
+
+    * show Gantt link on more /Search/ pages
+    * drop RT 3 support
 
 0.19 Sat Oct 20 12:14:51 CST 2012
 
