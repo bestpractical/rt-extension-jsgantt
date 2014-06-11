@@ -50,9 +50,73 @@
 
 RT::Extension::JSGantt - Gantt charts for your tickets
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
-    use RT::Extension::JSGantt;
+This extension uses the Starts and Due dates, along with ticket
+dependencies, to produce Gantt charts.
+
+=head1 INSTALLATION
+
+=over
+
+=item C<perl Makefile.PL>
+
+=item C<make>
+
+=item C<make install>
+
+May need root permissions
+
+=item Edit your F</opt/rt4/etc/RT_SiteConfig.pm>
+
+If you are using RT 4.2 or greater, add this line:
+
+    Plugin('RT::Extension::JSGantt');
+
+For RT 3.8 and 4.0, add this line:
+
+    Set(@Plugins, qw(RT::Extension::JSGantt));
+
+or add C<RT::Extension::JSGantt> to your existing C<@Plugins> line.
+
+=item Clear your mason cache
+
+    rm -rf /opt/rt4/var/mason_data/obj
+
+=item Restart your webserver
+
+=back
+
+=head1 CONFIGURATION
+
+    Set(
+        %JSGanttOptions,
+        DefaultFormat => 'day', # or week or month or quarter
+        ShowOwner     => 1,
+        ShowProgress  => 1,
+        ShowDuration  => 1,
+
+        # define your own color scheme:
+        # ColorScheme => ['ff0000', 'ffff00', 'ff00ff', '00ff00', '00ffff', '0000ff'],
+
+        # we color owners consistently by default, you can disable it via:
+        # ColorSchemeByOwner => 0,
+
+        # you can specify colors to use, unspecified owners will be
+        # assigned to some color automatically:
+        # ColorSchemeByOwner => { root => 'ff0000', foo => '00ff00' },
+
+        # if can't find both start and end dates, use this color
+        NullDatesColor => 333,
+
+        # to caculate day length
+        WorkingHoursPerDay => 8,
+
+        # used to set start/end if one exists but the other does not
+        DefaultDays => 7,
+    );
+
+=head1 METHODS
 
 =cut
 
@@ -458,5 +522,27 @@ sub _ParentTicket {
     }
     return;
 }
+
+
+=head1 AUTHOR
+
+sunnavy <sunnavy@bestpractical.com>
+
+=head1 BUGS
+
+All bugs should be reported via email to
+L<bug-RT-Extension-JSGantt@rt.cpan.org|mailto:bug-RT-Extension-JSGantt@rt.cpan.org>
+or via the web at
+L<rt.cpan.org|http://rt.cpan.org/Public/Dist/Display.html?Name=RT-Extension-JSGantt>.
+
+=head1 LICENSE AND COPYRIGHT
+
+This software is Copyright (c) 2014 by Best Practical Solutions
+
+This is free software, licensed under:
+
+  The GNU General Public License, Version 2, June 1991
+
+=cut
 
 1;
