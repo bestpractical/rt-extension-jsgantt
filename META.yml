@@ -8,7 +8,7 @@ configure_requires:
   ExtUtils::MakeMaker: 6.36
 distribution_type: module
 dynamic_config: 1
-generated_by: 'Module::Install version 1.06'
+generated_by: 'Module::Install version 1.08'
 license: gplv2
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -19,9 +19,10 @@ no_index:
     - etc
     - html
     - inc
+    - static
 requires:
   JSON: 0
   List::MoreUtils: 0
 resources:
   repository: git://github.com/bestpractical/rt-extension-jsgantt.git
-version: 0.21
+version: '0.21'

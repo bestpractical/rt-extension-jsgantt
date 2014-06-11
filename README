@@ -1,51 +1,88 @@
-RT-Extension-JSGantt version 0.21
+NAME
+    RT::Extension::JSGantt - Gantt charts for your tickets
 
-CAVEAT: please use version 0.18 if you are running RT 3.
+DESCRIPTION
+    This extension uses the Starts and Due dates, along with ticket
+    dependencies, to produce Gantt charts.
 
-How to install:
+INSTALLATION
+    "perl Makefile.PL"
+    "make"
+    "make install"
+        May need root permissions
 
-1. perl Makefile.PL
-2. make
-3. make install ( you may need root permission )
-4. config items in etc/RT_SiteConfig.pm
-    # add RT::Extension::JSGantt to @Plugins: e.g.
-        Set(@Plugins,'RT::Extension::JSGantt');
-    # customize JSGantt as you wish:
+    Edit your /opt/rt4/etc/RT_SiteConfig.pm
+        If you are using RT 4.2 or greater, add this line:
 
-    Set(
-        %JSGanttOptions,
-        DefaultFormat => 'day', # or week or month or quarter
-        ShowOwner     => 1,
-        ShowProgress  => 1,
-        ShowDuration  => 1,
+            Plugin('RT::Extension::JSGantt');
 
-        # define your own color scheme:
-        # ColorScheme => ['ff0000', 'ffff00', 'ff00ff', '00ff00', '00ffff', '0000ff'],
+        For RT 3.8 and 4.0, add this line:
 
-        # we color owners consistently by default, you can disable it via:
-        # ColorSchemeByOwner => 0,
+            Set(@Plugins, qw(RT::Extension::JSGantt));
 
-        # you can specify colors to use, unspecified owners will be
-        # assigned to some color automatically:
-        # ColorSchemeByOwner => { root => 'ff0000', foo => '00ff00' },
+        or add "RT::Extension::JSGantt" to your existing @Plugins line.
 
-        # if can't find both start and end dates, use this color
-        NullDatesColor => 333,
+    Clear your mason cache
+            rm -rf /opt/rt4/var/mason_data/obj
 
-        # to caculate day length
-        WorkingHoursPerDay => 8,
+    Restart your webserver
 
-        # used to set start/end if one exists but the other does not
-        DefaultDays => 7,
-    );
+CONFIGURATION
+        Set(
+            %JSGanttOptions,
+            DefaultFormat => 'day', # or week or month or quarter
+            ShowOwner     => 1,
+            ShowProgress  => 1,
+            ShowDuration  => 1,
 
-6. restart RT
+            # define your own color scheme:
+            # ColorScheme => ['ff0000', 'ffff00', 'ff00ff', '00ff00', '00ffff', '0000ff'],
 
-How to update jsgantt.js and jsgantt.css:
+            # we color owners consistently by default, you can disable it via:
+            # ColorSchemeByOwner => 0,
 
-To make it work better with RT, we changed original jsgantt.js and jsgantt.css,
-which can be found in jsgantt.diff.
+            # you can specify colors to use, unspecified owners will be
+            # assigned to some color automatically:
+            # ColorSchemeByOwner => { root => 'ff0000', foo => '00ff00' },
 
-If you want to update jsgantt.js and jsgantt.css to a new version, please 
-review the diff to see what have been changed and maybe do the same change too.
+            # if can't find both start and end dates, use this color
+            NullDatesColor => 333,
+
+            # to caculate day length
+            WorkingHoursPerDay => 8,
+
+            # used to set start/end if one exists but the other does not
+            DefaultDays => 7,
+        );
+
+METHODS
+  AllRelatedTickets
+    Given a ticket, return all the relative tickets, including the original
+    ticket.
+
+  TicketsInfo
+    Given tickets, resolve useful info for jsgantt.js Returns a 2 elements
+    array, 1st is the ids arrayref, 2nd is the info hashref.
+
+  GetTimeRange
+    Given a ticket, resolve it's start/end. Returns an array like (
+    $start_obj, $start, $end_obj, $end ) $start and $end are strings like
+    3/21/2011
+
+AUTHOR
+    sunnavy <sunnavy@bestpractical.com>
+
+BUGS
+    All bugs should be reported via email to
+    bug-RT-Extension-JSGantt@rt.cpan.org
+    <mailto:bug-RT-Extension-JSGantt@rt.cpan.org> or via the web at
+    rt.cpan.org
+    <http://rt.cpan.org/Public/Dist/Display.html?Name=RT-Extension-JSGantt>.
+
+LICENSE AND COPYRIGHT
+    This software is Copyright (c) 2014 by Best Practical Solutions
+
+    This is free software, licensed under:
+
+      The GNU General Public License, Version 2, June 1991
 

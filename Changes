@@ -1,6 +1,9 @@
 Revision history for RT-Extension-JSGantt
 
-0.21
+0.21 Wed Jun 16 23:32:17 EDT 2014
+
+    * Packaging updates; no code change.  This includes serving the CSS
+      from static/ under RT 4.2
 
 0.20 Mon Feb 10 19:25:33 CST 2014
 
