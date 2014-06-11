@@ -45,5 +45,4 @@
 %# those contributions and any derivatives thereof.
 %# 
 %# END BPS TAGGED BLOCK }}}
-<link rel="stylesheet" type="text/css" href="<%RT->Config->Get('WebPath')%>/NoAuth/css/jsgantt.css"/>
 <script language="javascript" src="<%RT->Config->Get('WebPath')%>/NoAuth/js/jsgantt.js"></script>

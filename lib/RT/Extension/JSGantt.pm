@@ -128,6 +128,9 @@ use warnings;
 use strict;
 use List::MoreUtils 'insert_after', 'uniq';
 
+# JS contains mason, and as such cannot use RT->AddJavaScript
+RT->AddStyleSheets('jsgantt.css');
+
 =head2 AllRelatedTickets
 
 Given a ticket, return all the relative tickets, including the original ticket.
