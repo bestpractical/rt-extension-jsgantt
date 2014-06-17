@@ -1,79 +1,65 @@
-Revision history for RT-Extension-JSGantt
+0.21 2014-06-16
+ - Packaging updates; no code change.  This includes serving the CSS from
+   static/ under RT 4.2
 
-0.21 Wed Jun 16 23:32:17 EDT 2014
+0.20 2014-02-10
+ - show Gantt link on more /Search/ pages
+ - drop RT 3 support
 
-    * Packaging updates; no code change.  This includes serving the CSS
-      from static/ under RT 4.2
+0.19 2012-10-20
+ - bump m:i to avoid it's bug in 1.04
 
-0.20 Mon Feb 10 19:25:33 CST 2014
+0.18 2012-02-07
+ - fix the double-encode bug in page menu links below /Search
 
-    * show Gantt link on more /Search/ pages
-    * drop RT 3 support
+0.17 2011-12-15
+ - fix a bug of config
 
-0.19 Sat Oct 20 12:14:51 CST 2012
+0.16 2011-10-27
+ - tweak parent selection process
 
-    * bump m:i to avoid it's bug in 1.04
+0.15 2011-10-27
+ - make ColorSchemeByOwner true by default
+ - fix the situation where number of owners are more than colors by
+   recycling the color scheme
 
-0.18 Tue Feb  7 02:27:48 CST 2012
+0.14 2011-10-26
+ - add ColorSchemeByOwner option to use one color for each user.
+ - improve the way we sort related tickets so children can appear just
+   after their parents.
+ - has_members now is true only if the ticket is the first parent of some
+   of its children
 
-    * fix the double-encode bug in page menu links below /Search
+0.13 2011-10-08
+ - fix the alignment bug in chrome/safari/ie8
 
-0.17 Thu Dec 15 11:58:40 CST 2011
+0.12 2011-05-07
+ - respect DateDayBeforeMonth config
 
-    * fix a bug of config
+0.10 2011-03-31
+ - use a generic JSGanttOptions config, see README for example
+ - make it work with RT 4
 
-0.16 Thu Oct 27 10:29:51 CST 2011
+0.04 2010-09-23
+ - in case there are remote links
 
-    * tweak parent selection process
+0.03 2010-06-30
+ - tweak the way we figure out Start/End Dates:
+       Start: Starts or Started field
+       End: Due Field
 
-0.15 Thu Oct 27 02:22:31 CST 2011
+   If one exists but not the other, first try to caculate by the time
+   estimated (or TimeLeft + TimeWorked) and the config
+   $JSGanttWorkingHoursPerDay; if fails, use config $JSGanttDefaultDays.
 
-    * make ColorSchemeByOwner true by default
-    * fix the situation where number of owners are more than colors by
-      recycling the color scheme
+   If both are not defined, find the minimal start date of the whole
+   result, use it for both start and end dates, and use config
+   $JSGanttNullDatesColor to draw
 
-0.14 Wed Oct 26 18:47:18 CST 2011
+0.02 2010-06-25
+ - use TimeWorked + TimeLeft for progress, use TimeEstimated instead if
+   TimeLeft is not defined.
 
-    * add ColorSchemeByOwner option to use one color for each user.
-    * improve the way we sort related tickets so children can appear just after their parents.
-    * has_members now is true only if the ticket is the first parent of some of its children
-
-0.13 Sat Oct  8 15:56:53 CST 2011
-
-    * fix the alignment bug in chrome/safari/ie8
-
-0.12 Sat May  7 19:55:01 CST 2011
-
-    * respect DateDayBeforeMonth config
-
-0.10 Thu Mar 31 14:59:47 CST 2011
-
-    * use a generic JSGanttOptions config, see README for example
-    * make it work with RT 4
-
-0.04 Thu Sep 23 09:20:16 CST 2010
-
-    * in case there are remote links
-
-0.03 Wed Jun 30 02:49:02 CST 2010
-
-    tweak the way we figure out Start/End Dates:
-        Start: Starts or Started field
-        End: Due Field
-
-        if one eixsts but the ohter not, first try to caculate by the time
-        estimated( or TimeLeft + TimeWorked ) and the config
-        $JSGanttWorkingHoursPerDay, if fails, use config $JSGanttDefaultDays.
-
-        if both are not defined, find the minimal start date of the whole
-        results, and use it for both start and end dates, and use config
-        $JSGanttNullDatesColor to draw
-
-0.02 Fri Jun 25 09:29:30 CST 2010
-
-use TimeWorked + TimeLeft for progress, use TimeEstimated instead
-    if TimeLeft is not defined.
-
-0.01 Wed Jun 23 13:00:12 CST 2010
-       Initial release.
+0.01 2010-06-23
+ - Initial release.
 
