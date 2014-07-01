@@ -6,9 +6,9 @@ DESCRIPTION
     dependencies, to produce Gantt charts.
 
 INSTALLATION
-    "perl Makefile.PL"
-    "make"
-    "make install"
+    perl Makefile.PL
+    make
+    make install
         May need root permissions
 
     Edit your /opt/rt4/etc/RT_SiteConfig.pm
@@ -20,7 +20,7 @@ INSTALLATION
 
             Set(@Plugins, qw(RT::Extension::JSGantt));
 
-        or add "RT::Extension::JSGantt" to your existing @Plugins line.
+        or add RT::Extension::JSGantt to your existing @Plugins line.
 
     Clear your mason cache
             rm -rf /opt/rt4/var/mason_data/obj

@@ -1,7 +1,7 @@
 ---
 abstract: 'Gantt charts for your tickets'
 author:
-  - 'sunnavy <sunnavy@bestpractical.com>'
+  - 'Best Practical Solutions, LLC <modules@bestpractical.com>'
 build_requires:
   ExtUtils::MakeMaker: 6.59
 configure_requires:
@@ -25,7 +25,8 @@ requires:
   List::MoreUtils: 0
   perl: 5.8.3
 resources:
-  repository: git://github.com/bestpractical/rt-extension-jsgantt.git
+  license: http://opensource.org/licenses/gpl-license.php
+  repository: http://github.com/bestpractical/rt-extension-jsgantt
 version: '1.00'
 x_module_install_rtx_version: 0.34_04
 x_requires_rt: 4.0.0

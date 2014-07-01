@@ -1,14 +1,9 @@
 use inc::Module::Install;
 
-version_from ('lib/RT/Extension/JSGantt.pm');
 RTx('RT-Extension-JSGantt');
-
-author ('sunnavy <sunnavy@bestpractical.com>');
-abstract_from('lib/RT/Extension/JSGantt.pm');
-readme_from('lib/RT/Extension/JSGantt.pm');
 license('GPLv2');
 
-repository 'git://github.com/bestpractical/rt-extension-jsgantt.git';
+repository 'http://github.com/bestpractical/rt-extension-jsgantt';
 
 requires( 'JSON' );
 requires( 'List::MoreUtils' );
