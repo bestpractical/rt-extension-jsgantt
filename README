@@ -16,7 +16,7 @@ INSTALLATION
 
             Plugin('RT::Extension::JSGantt');
 
-        For RT 3.8 and 4.0, add this line:
+        For RT 4.0, add this line:
 
             Set(@Plugins, qw(RT::Extension::JSGantt));
 
@@ -70,14 +70,16 @@ METHODS
     3/21/2011
 
 AUTHOR
-    sunnavy <sunnavy@bestpractical.com>
+    Best Practical Solutions, LLC <modules@bestpractical.com>
 
 BUGS
     All bugs should be reported via email to
-    bug-RT-Extension-JSGantt@rt.cpan.org
-    <mailto:bug-RT-Extension-JSGantt@rt.cpan.org> or via the web at
-    rt.cpan.org
-    <http://rt.cpan.org/Public/Dist/Display.html?Name=RT-Extension-JSGantt>.
+
+        L<bug-RT-Extension-JSGantt@rt.cpan.org|mailto:bug-RT-Extension-JSGantt@rt.cpan.org>
+
+    or via the web at
+
+        L<rt.cpan.org|http://rt.cpan.org/Public/Dist/Display.html?Name=RT-Extension-JSGantt>.
 
 LICENSE AND COPYRIGHT
     This software is Copyright (c) 2014 by Best Practical Solutions

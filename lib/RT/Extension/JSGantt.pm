@@ -73,7 +73,7 @@ If you are using RT 4.2 or greater, add this line:
 
     Plugin('RT::Extension::JSGantt');
 
-For RT 3.8 and 4.0, add this line:
+For RT 4.0, add this line:
 
     Set(@Plugins, qw(RT::Extension::JSGantt));
 
@@ -122,7 +122,7 @@ or add C<RT::Extension::JSGantt> to your existing C<@Plugins> line.
 
 package RT::Extension::JSGantt;
 
-our $VERSION = '0.22';
+our $VERSION = '1.00';
 
 use warnings;
 use strict;
@@ -529,14 +529,17 @@ sub _ParentTicket {
 
 =head1 AUTHOR
 
-sunnavy <sunnavy@bestpractical.com>
+Best Practical Solutions, LLC E<lt>modules@bestpractical.comE<gt>
 
 =head1 BUGS
 
 All bugs should be reported via email to
-L<bug-RT-Extension-JSGantt@rt.cpan.org|mailto:bug-RT-Extension-JSGantt@rt.cpan.org>
+
+    L<bug-RT-Extension-JSGantt@rt.cpan.org|mailto:bug-RT-Extension-JSGantt@rt.cpan.org>
+
 or via the web at
-L<rt.cpan.org|http://rt.cpan.org/Public/Dist/Display.html?Name=RT-Extension-JSGantt>.
+
+    L<rt.cpan.org|http://rt.cpan.org/Public/Dist/Display.html?Name=RT-Extension-JSGantt>.
 
 =head1 LICENSE AND COPYRIGHT
 
