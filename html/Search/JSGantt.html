@@ -64,9 +64,12 @@
     g.setShowRes(<% $options{'ShowOwner'}? 1 : 0 %>);
     g.setShowDur(<% $options{'ShowDuration'}? 1 : 0 %> );
     g.setShowComp(<% $options{'ShowProgress'} ? 1 : 0 %> );
-
-    g.setCaptionType('Resource');  // Set to Show Caption (None,Caption,Resource,Duration,Complete)
-
+    g.setCaptionType('<% $options{'CaptionType'} or 'Resource' %>');  // Set to Show Caption (None,Caption,Resource,Duration,Complete)
+    g.setShowStartDate(<% defined $options{'ShowStartDate'} ? $options{'ShowStartDate'} : 1 %>); // Show/Hide Start Date(0/1)
+    g.setShowEndDate(<% defined $options{'ShowEndDate'} ? $options{'ShowEndDate'} : 1 %>); // Show/Hide End Date(0/1)
+    g.setDateInputFormat('<% $options{'DateInputFormat'} or 'mm/dd/yyyy' %>')  // Set format of input dates ('mm/dd/yyyy', 'dd/mm/yyyy', 'yyyy-mm-dd')
+    g.setDateDisplayFormat('<% $options{'DateDisplayFormat'} or 'mm/dd/yyyy' %>');
+    g.setFormatArr(<% $options{'FormatArr'} or q!'day','week','month','quarter'! | n %>) // Set format options (up to 4 : "minute","hour","day","week","month","quarter")
 
   //var gr = new Graphics();
 
