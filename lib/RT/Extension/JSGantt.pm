@@ -131,7 +131,7 @@ or add C<RT::Extension::JSGantt> to your existing C<@Plugins> line.
 
 package RT::Extension::JSGantt;
 
-our $VERSION = '1.00';
+our $VERSION = '1.01';
 
 use warnings;
 use strict;
