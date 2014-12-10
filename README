@@ -78,6 +78,20 @@ METHODS
     $start_obj, $start, $end_obj, $end ) $start and $end are strings like
     3/21/2011
 
+UPGRADING
+  DateDayBeforeMonth
+    Prior to version 1.02, there was an undocumented RT config option
+    DateDayBeforeMonth. If you have DateDayBeforeMonth set in your RT, you
+    can make JSGantt do the same thing by setting DateDisplayFormat in
+    RT_SiteConfig.pm:
+
+        Set(
+            %JSGanttOptions,
+            ...
+            # DateDisplayFormat => 'dd/mm/yyyy',
+            ...
+        );
+
 AUTHOR
     Best Practical Solutions, LLC <modules@bestpractical.com>
 
