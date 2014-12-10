@@ -16,7 +16,6 @@ meta-spec:
 name: RT-Extension-JSGantt
 no_index:
   directory:
-    - etc
     - html
     - inc
     - static
@@ -27,6 +26,6 @@ requires:
 resources:
   license: http://opensource.org/licenses/gpl-license.php
   repository: http://github.com/bestpractical/rt-extension-jsgantt
-version: '1.01'
+version: '1.02'
 x_module_install_rtx_version: '0.36'
 x_requires_rt: 4.0.0

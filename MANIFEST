@@ -1,5 +1,4 @@
 Changes
-etc/jsgantt.diff
 html/Callbacks/JSGantt/Elements/Header/Head
 html/Callbacks/JSGantt/Elements/Tabs/Privileged
 html/Callbacks/JSGantt/Search/Elements/ResultViews/AfterTools
