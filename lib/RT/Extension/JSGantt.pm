@@ -131,7 +131,7 @@ or add C<RT::Extension::JSGantt> to your existing C<@Plugins> line.
 
 package RT::Extension::JSGantt;
 
-our $VERSION = '1.01';
+our $VERSION = '1.02';
 
 use warnings;
 use strict;
@@ -535,6 +535,21 @@ sub _ParentTicket {
     return;
 }
 
+=head1 UPGRADING
+
+=head2 DateDayBeforeMonth
+
+Prior to version 1.02, there was an undocumented RT config option
+C<DateDayBeforeMonth>. If you have DateDayBeforeMonth set in your RT, you can
+make JSGantt do the same thing by setting C<DateDisplayFormat> in
+RT_SiteConfig.pm:
+
+    Set(
+        %JSGanttOptions,
+        ...
+        # DateDisplayFormat => 'dd/mm/yyyy',
+        ...
+    );
 
 =head1 AUTHOR
 
