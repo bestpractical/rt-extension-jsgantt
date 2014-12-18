@@ -9,7 +9,7 @@ configure_requires:
 distribution_type: module
 dynamic_config: 1
 generated_by: 'Module::Install version 1.12'
-license: gplv2
+license: gpl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: 1.4
@@ -25,7 +25,7 @@ requires:
   perl: 5.8.3
 resources:
   license: http://opensource.org/licenses/gpl-license.php
-  repository: http://github.com/bestpractical/rt-extension-jsgantt
+  repository: https://github.com/bestpractical/rt-extension-jsgantt
 version: '1.02'
 x_module_install_rtx_version: '0.36'
 x_requires_rt: 4.0.0
