@@ -8,7 +8,7 @@ no warnings 'once';
 
 use Module::Install::Base;
 use base 'Module::Install::Base';
-our $VERSION = '0.36';
+our $VERSION = '0.37';
 
 use FindBin;
 use File::Glob     ();
@@ -123,7 +123,7 @@ install ::
         $has_etc{acl}++;
     }
     if ( -e 'etc/initialdata' ) { $has_etc{initialdata}++; }
-    if ( grep { /\d+\.\d+(\.\d+)?.*$/ } glob('etc/upgrade/*.*') ) {
+    if ( grep { /\d+\.\d+\.\d+.*$/ } glob('etc/upgrade/*.*.*') ) {
         $has_etc{upgrade}++;
     }
 
