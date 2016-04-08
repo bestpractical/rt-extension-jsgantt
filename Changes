@@ -1,3 +1,7 @@
+1.04 2016-04-08
+ - Hide link to Gantt chart on simple search page when there's no query
+ - Fix Gantt chart page from throwing error when there's no search results
+
 1.03 2014-12-18
  - Packaging updates
 
