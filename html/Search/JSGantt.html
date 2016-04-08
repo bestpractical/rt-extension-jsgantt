@@ -133,7 +133,7 @@ elsif ($Query) {
     else {
         $Tickets->OrderBy( FIELD => $OrderBy, ORDER => $Order );
     }
-    @Tickets = @{ $Tickets->ItemsArrayRef };
+    @Tickets = @{ $Tickets->ItemsArrayRef || [] };
 }
 
 my ( $ids, $info ) = RT::Extension::JSGantt->TicketsInfo(
