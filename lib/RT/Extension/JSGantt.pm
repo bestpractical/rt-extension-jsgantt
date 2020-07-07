@@ -2,7 +2,7 @@
 #
 # COPYRIGHT:
 #
-# This software is Copyright (c) 1996-2014 Best Practical Solutions, LLC
+# This software is Copyright (c) 1996-2020 Best Practical Solutions, LLC
 #                                          <sales@bestpractical.com>
 #
 # (Except where explicitly superseded by other copyright notices)
@@ -49,6 +49,10 @@
 =head1 NAME
 
 RT::Extension::JSGantt - Gantt charts for your tickets
+
+=head1 RT VERSION
+
+Works with RT 4.2, 4.4, 5.0
 
 =head1 DESCRIPTION
 
@@ -131,7 +135,7 @@ or add C<RT::Extension::JSGantt> to your existing C<@Plugins> line.
 
 package RT::Extension::JSGantt;
 
-our $VERSION = '1.04';
+our $VERSION = '1.05';
 
 use warnings;
 use strict;
@@ -567,7 +571,7 @@ or via the web at
 
 =head1 LICENSE AND COPYRIGHT
 
-This software is Copyright (c) 2014 by Best Practical Solutions
+This software is Copyright (c) 2020 by Best Practical Solutions
 
 This is free software, licensed under:
 

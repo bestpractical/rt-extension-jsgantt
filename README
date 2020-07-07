@@ -1,6 +1,10 @@
 NAME
     RT::Extension::JSGantt - Gantt charts for your tickets
 
+
+RT VERSION
+    Works with RT 4.2, 4.4, 5.0
+
 DESCRIPTION
     This extension uses the Starts and Due dates, along with ticket
     dependencies, to produce Gantt charts.

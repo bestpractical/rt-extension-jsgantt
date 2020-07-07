@@ -1,3 +1,6 @@
+1.05 2020-07-06
+ - Updated documentation, tested with RT5
+
 1.04 2016-04-08
  - Hide link to Gantt chart on simple search page when there's no query
  - Fix Gantt chart page from throwing error when there's no search results
