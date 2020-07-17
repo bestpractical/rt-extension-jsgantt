@@ -567,7 +567,7 @@ or via the web at
 
 =head1 LICENSE AND COPYRIGHT
 
-This software is Copyright (c) 2014 by Best Practical Solutions
+This software is Copyright (c) 2014-2020 by Best Practical Solutions
 
 This is free software, licensed under:
 
