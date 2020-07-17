@@ -23,7 +23,7 @@ INSTALLATION
         or add RT::Extension::JSGantt to your existing @Plugins line.
 
     Clear your mason cache
-            rm -rf /opt/rt4/var/mason_data/obj
+            rm -rf /opt/rt5/var/mason_data/obj
 
     Restart your webserver
 

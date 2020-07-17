@@ -81,7 +81,7 @@ or add C<RT::Extension::JSGantt> to your existing C<@Plugins> line.
 
 =item Clear your mason cache
 
-    rm -rf /opt/rt4/var/mason_data/obj
+    rm -rf /opt/rt5/var/mason_data/obj
 
 =item Restart your webserver
 
