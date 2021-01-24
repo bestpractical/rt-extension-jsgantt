@@ -118,7 +118,7 @@ or add C<RT::Extension::JSGantt> to your existing C<@Plugins> line.
         # if can't find both start and end dates, use this color
         NullDatesColor => 333,
 
-        # to caculate day length
+        # to calculate day length
         WorkingHoursPerDay => 8,
 
         # used to set start/end if one exists but the other does not
