@@ -533,6 +533,23 @@ sub _ParentTicket {
     return;
 }
 
+if ( RT->Config->can('RegisterPluginConfig') ) {
+    RT->Config->RegisterPluginConfig(
+        Plugin  => 'JSGantt',
+        Content => [
+            {
+                Name => 'JSGanttOptions',
+                Help => 'https://metacpan.org/pod/RT::Extension::JSGantt#CONFIGURATION',
+            },
+        ],
+        Meta    => {
+            JSGanttOptions => {
+                Type => 'HASH',
+            },
+        }
+    );
+}
+
 =head1 UPGRADING
 
 =head2 DateDayBeforeMonth
