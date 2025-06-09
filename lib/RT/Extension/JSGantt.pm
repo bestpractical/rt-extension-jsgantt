@@ -55,6 +55,10 @@ RT::Extension::JSGantt - Gantt charts for your tickets
 This extension uses the Starts and Due dates, along with ticket
 dependencies, to produce Gantt charts.
 
+=head1 RT VERSION
+
+Works with RT 6.0 and 5.0
+
 =head1 INSTALLATION
 
 =over
@@ -67,21 +71,15 @@ dependencies, to produce Gantt charts.
 
 May need root permissions
 
-=item Edit your F</opt/rt5/etc/RT_SiteConfig.pm>
+=item Edit your F</opt/rt6/etc/RT_SiteConfig.pm>
 
-If you are using RT 4.2 or greater, add this line:
+Add this line to your F</opt/rt6/etc/RT_SiteConfig.pm>:
 
     Plugin('RT::Extension::JSGantt');
 
-For RT 4.0, add this line:
-
-    Set(@Plugins, qw(RT::Extension::JSGantt));
-
-or add C<RT::Extension::JSGantt> to your existing C<@Plugins> line.
-
 =item Clear your mason cache
 
-    rm -rf /opt/rt5/var/mason_data/obj
+    rm -rf /opt/rt6/var/mason_data/obj
 
 =item Restart your webserver
 
@@ -567,7 +565,7 @@ or via the web at
 
 =head1 LICENSE AND COPYRIGHT
 
-This software is Copyright (c) 2014-2021 by Best Practical Solutions
+This software is Copyright (c) 2014-2025 by Best Practical Solutions
 
 This is free software, licensed under:
 
