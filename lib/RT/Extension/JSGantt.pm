@@ -129,7 +129,7 @@ Add this line to your F</opt/rt6/etc/RT_SiteConfig.pm>:
 
 package RT::Extension::JSGantt;
 
-our $VERSION = '1.08';
+our $VERSION = '1.09';
 
 use warnings;
 use strict;
